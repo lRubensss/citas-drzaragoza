@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Sistema automatizado de recordatorios y confirmación de citas por WhatsApp para la Clínica Dental Dr. Zaragozá",
   "main": "src/server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "build": "echo 'Build successful - Ready for production'",
     "start": "node src/server.js",
