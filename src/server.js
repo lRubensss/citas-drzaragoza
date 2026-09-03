@@ -155,7 +155,7 @@ app.post('/api/appointments', checkLicense, (req, res) => {
     // 1. Guardar de forma atómica en el almacenamiento
     db.createAppointment(newAppt);
 
-    // 2. DISPARO INMEDIATO: Mensaje 1 de Confirmación de Agendamiento desde +34610812835
+    // 2. DISPARO INMEDIATO: Mensaje 1 de Confirmación de Agendamiento desde +34 695 38 48 14
     let dt = DateTime.fromISO(newAppt.appointment_datetime, { zone: config.TIMEZONE });
     if (!dt.isValid) {
       dt = DateTime.fromFormat(newAppt.appointment_datetime, 'yyyy-MM-dd HH:mm', { zone: config.TIMEZONE });

@@ -264,7 +264,7 @@
       <!-- CONTROLES Y ACCIONES SUPERIORES -->
       <div class="flex flex-wrap items-center gap-3">
         
-        <!-- ESTADO DE WHATSAPP OFICIAL (+34 610 81 28 35) -->
+        <!-- ESTADO DE WHATSAPP OFICIAL (+34 695 38 48 14) -->
         <button 
           onclick="openWhatsAppModal()" 
           id="whatsapp-badge-btn" 
@@ -310,7 +310,7 @@
           </span>
           <span class="text-[#CBD5E0]">|</span>
           <span class="text-xs text-[#4A5568] flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#F36279]"></span> Notificaciones automáticas activas (+34 610 81 28 35)
+            <span class="w-2.5 h-2.5 rounded-full bg-[#F36279]"></span> Notificaciones automáticas activas (+34 695 38 48 14)
           </span>
         </div>
         <div class="italic text-[#718096]">
@@ -444,7 +444,7 @@
           <div class="bg-[#FDE8EC]/60 border border-[#F36279]/30 p-3 rounded-xl text-[11px] text-[#2D3748] flex items-start space-x-2.5">
             <i class="fa-solid fa-circle-info text-[#F36279] mt-0.5 text-sm"></i>
             <div class="space-y-1">
-              <p><strong>• Mensaje 1 (Confirmación Inmediata):</strong> Notificación informativa enviada al instante tras agendar desde el número oficial +34 610 81 28 35.</p>
+              <p><strong>• Mensaje 1 (Confirmación Inmediata):</strong> Notificación informativa enviada al instante tras agendar desde el número oficial +34 695 38 48 14.</p>
               <p><strong>• Mensaje 2 (Recordatorio Informativo):</strong> Se enviará automáticamente 24 horas antes de la consulta recordando fecha, hora y doctor.</p>
             </div>
           </div>
@@ -516,7 +516,7 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- MODAL: CONEXIÓN WHATSAPP QR (BAILEYS - LÍNEA +34 610 81 28 35) -->
+  <!-- MODAL: CONEXIÓN WHATSAPP QR (BAILEYS - LÍNEA +34 695 38 48 14) -->
   <!-- ============================================================== -->
   <div id="modal-whatsapp" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center hidden p-4 overflow-y-auto">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#E2E8F0] modal-enter">
@@ -528,7 +528,7 @@
           </div>
           <div>
             <h3 class="font-bold text-[#2D3748] text-base">Vinculación WhatsApp Oficial</h3>
-            <p class="text-xs text-[#718096]">Línea Oficial: +34 610 81 28 35</p>
+            <p class="text-xs text-[#718096]">Línea Oficial: +34 695 38 48 14</p>
           </div>
         </div>
         <button onclick="closeWhatsAppModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition cursor-pointer">
@@ -559,7 +559,7 @@
 
         <div class="bg-[#FAFAFB] p-3 rounded-xl border border-[#E2E8F0] text-[11px] text-[#4A5568] text-left space-y-1">
           <p class="font-bold text-[#2D3748]">Instrucciones de Vinculación:</p>
-          <p>1. Abre WhatsApp en el móvil oficial de la clínica (<strong>+34 610 81 28 35</strong>).</p>
+          <p>1. Abre WhatsApp en el móvil oficial de la clínica (<strong>+34 695 38 48 14</strong>).</p>
           <p>2. Ve a <strong>Ajustes &gt; Dispositivos vinculados &gt; Vincular un dispositivo</strong>.</p>
           <p>3. Escanea este código QR con la cámara del teléfono.</p>
         </div>
@@ -748,7 +748,7 @@
 
         if (data.status === 'CONNECTED') {
           badgeBtn.className = 'flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-2xs cursor-pointer';
-          statusText.innerText = `Conectado: ${data.officialPhone || '+34 610 81 28 35'}`;
+          statusText.innerText = `Conectado: ${data.officialPhone || '+34 695 38 48 14'}`;
           modalStatus.innerText = `Vinculado al número oficial (${data.connectedPhone || data.officialPhone})`;
           modalBadge.innerText = 'CONECTADO';
           modalBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300';
@@ -756,7 +756,7 @@
           qrPlaceholder.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500 text-5xl mb-2"></i><p class="font-bold text-[#2D3748]">WhatsApp Oficial Vinculado</p><p class="text-xs text-[#718096]">Línea lista para envíos informativos.</p>';
         } else if (data.status === 'SCAN_QR' && data.qr) {
           badgeBtn.className = 'flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition shadow-2xs cursor-pointer';
-          statusText.innerText = 'WhatsApp: Escanear QR (+34 610 81 28 35)';
+          statusText.innerText = 'WhatsApp: Escanear QR (+34 695 38 48 14)';
           modalStatus.innerText = 'Esperando escaneo desde la app de WhatsApp';
           modalBadge.innerText = 'ESCANEAR QR';
           modalBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-100 text-amber-800 border border-amber-300 animate-pulse';
@@ -826,7 +826,7 @@
             <i class="fa-solid fa-triangle-exclamation text-[#F36279] mt-0.5 text-sm"></i>
             <div>
               <p class="font-bold text-rose-950">WhatsApp Desconectado</p>
-              <p class="text-rose-800">${a.reason || 'Reconecte el teléfono oficial +34 610 81 28 35 escaneando el código QR.'}</p>
+              <p class="text-rose-800">${a.reason || 'Reconecte el teléfono oficial +34 695 38 48 14 escaneando el código QR.'}</p>
             </div>
           </div>
           <div class="flex items-center space-x-2 shrink-0">

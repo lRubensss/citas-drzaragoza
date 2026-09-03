@@ -14,6 +14,6 @@ services:
       - key: TZ
         value: Europe/Madrid
       - key: OFFICIAL_PHONE
-        value: "34610812835"
+        value: "34695384814"
       - key: DATABASE_URL
         sync: false

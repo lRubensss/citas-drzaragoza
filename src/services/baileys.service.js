@@ -176,7 +176,7 @@ class BaileysService {
               patient_name: 'Admin',
               patient_phone: `+${phoneNum}`,
               patient_message: `Teléfono vinculado no coincide con ${config.OFFICIAL_PHONE_FORMATTED}`,
-              reason: 'Por seguridad, el bot requiere vincular el teléfono oficial 610812835.',
+              reason: `Por seguridad, el bot requiere vincular el teléfono oficial ${config.OFFICIAL_PHONE_FORMATTED}.`,
             });
           }
 

@@ -2,8 +2,8 @@ process.env.TZ = 'Europe/Madrid';
 require('dotenv').config();
 
 module.exports = {
-  OFFICIAL_PHONE: process.env.OFFICIAL_PHONE || '34610812835',
-  OFFICIAL_PHONE_FORMATTED: '+34 610 81 28 35',
+  OFFICIAL_PHONE: process.env.OFFICIAL_PHONE || '34695384814',
+  OFFICIAL_PHONE_FORMATTED: '+34 695 38 48 14',
   CLINIC_NAME: 'Clínica Dental Dr. Zaragozá',
   TIMEZONE: 'Europe/Madrid',
   PORT: process.env.PORT || 3000,
