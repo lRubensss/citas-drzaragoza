@@ -13,19 +13,18 @@ class SupabaseService {
   init() {
     if (config.DATABASE_URL) {
       try {
+        const isInternalRender = config.DATABASE_URL.includes('dpg-') && !config.DATABASE_URL.includes('.render.com');
         this.pool = new Pool({
           connectionString: config.DATABASE_URL,
-          ssl: {
-            rejectUnauthorized: false, // Requerido para conexiones cloud de Supabase / Neon / Render
-          },
+          ssl: isInternalRender ? false : { rejectUnauthorized: false },
           max: 10,
           idleTimeoutMillis: 30000,
           connectionTimeoutMillis: 10000,
         });
         this.isEnabled = true;
-        console.log('✅ [SUPABASE/POSTGRESQL] Cliente de base de datos cloud inicializado.');
+        console.log(`✅ [DATABASE CLOUD] Inicializado (SSL: ${isInternalRender ? 'desactivado para red interna Render' : 'activado'}).`);
       } catch (err) {
-        console.error('❌ [SUPABASE INIT ERROR]', err.message);
+        console.error('❌ [DATABASE INIT ERROR]', err.message);
         this.isEnabled = false;
       }
     } else {

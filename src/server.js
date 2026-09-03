@@ -347,11 +347,18 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = config.PORT;
-app.listen(PORT, () => {
+process.on('unhandledRejection', (reason) => {
+  console.warn('⚠️ [UNHANDLED REJECTION CAUGHT]', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('🚨 [UNCAUGHT EXCEPTION CAUGHT]', err);
+});
+
+const PORT = process.env.PORT || config.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n======================================================`);
   console.log(`🦷 CLÍNICA DENTAL DR. ZARAGOZÁ - SERVIDOR MAESTRO ACTIVO`);
-  console.log(`📡 Puerto: http://localhost:${PORT}`);
+  console.log(`📡 Puerto: http://0.0.0.0:${PORT}`);
   console.log(`📱 Número Emisor Oficial Autorizado: ${config.OFFICIAL_PHONE_FORMATTED}`);
   console.log(`🛡️ Protección Antibloqueo: Pausas de 3-5s activadas`);
   console.log(`☁️ Arquitectura Zero-Cost: Persistencia Local & Keep-Alive`);
