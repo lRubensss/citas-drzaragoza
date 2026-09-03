@@ -1,0 +1,270 @@
+{
+  "appointments": [],
+  "alerts": [],
+  "chats": {
+    "+34655443322": [
+      {
+        "sender": "bot",
+        "text": "Hola Carlos Ruiz, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 22:26 con Dra. Martínez (Ortodoncia) 🦷. ¡Te esperamos!",
+        "time": "18:26"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Carlos Ruiz, te recordamos que mañana 03/09/2026 a las 22:26 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:27"
+      }
+    ],
+    "+34688991122": [
+      {
+        "sender": "bot",
+        "text": "Hola Fernando Alonso, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 18:27 con Dr. Zaragozá (Implantes) 🦷. ¡Te esperamos!",
+        "time": "18:27"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Fernando Alonso, te recordamos que mañana 03/09/2026 a las 18:27 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:27"
+      },
+      {
+        "sender": "patient",
+        "text": "1",
+        "time": "18:27"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, Fernando Alonso! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "18:27"
+      }
+    ],
+    "+34691140506": [
+      {
+        "sender": "bot",
+        "text": "Hola juan, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 23:37 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "18:31"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola juan, te recordamos que mañana 03/09/2026 a las 23:37 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:32"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola JAVIER, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 14:06 con Equipo Dr. Zaragozá 🦷. ¡Te esperamos!",
+        "time": "18:36"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola JAVIER, te recordamos que mañana 03/09/2026 a las 14:06 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:37"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola JAVIER, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido agendada para el 03/09/2026 a las 08:00 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "18:58"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola JAVIER, te recordamos que mañana 03/09/2026 a las 08:00 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:59"
+      },
+      {
+        "sender": "patient",
+        "text": "1",
+        "time": "19:01"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, juan! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "19:01"
+      },
+      {
+        "sender": "patient",
+        "text": "Sí, confirmo",
+        "time": "19:01"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, juan! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "19:01"
+      },
+      {
+        "sender": "patient",
+        "text": "1",
+        "time": "19:08"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, juan! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "19:08"
+      },
+      {
+        "sender": "patient",
+        "text": "1",
+        "time": "19:08"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, juan! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "19:08"
+      },
+      {
+        "sender": "patient",
+        "text": "Sí, confirmo",
+        "time": "19:08"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, juan! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "19:08"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola JAVIER, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido agendada para el 04/09/2026 a las 16:14 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "11:11"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola JAVIER, te recordamos que mañana 04/09/2026 a las 16:14 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* con Dr. Zaragozá (Implantología) 🦷.\n\n📍 Te esperamos en la clínica. Si necesitas cualquier consulta o cambio de horario, puedes llamarnos o escribirnos por aquí.\n\n¡Que tengas un buen día!",
+        "time": "11:12"
+      }
+    ],
+    "+34699112233": [
+      {
+        "sender": "bot",
+        "text": "Hola jAVIER, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 08:00 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "18:32"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola jAVIER, te recordamos que mañana 03/09/2026 a las 08:00 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:33"
+      }
+    ],
+    "+34644063367": [
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 08:00 con Equipo Dr. Zaragozá 🦷. ¡Te esperamos!",
+        "time": "18:37"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, te informamos que tu cita en la *Clínica Dental Dr. Zaragozá* ha sido reprogramada para el 04/09/2026 a las 08:00 🦷.",
+        "time": "18:38"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 03/09/2026 a las 10:00 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "18:45"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, te recordamos que mañana 03/09/2026 a las 10:00 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:46"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido agendada para el 15/09/2026 a las 08:00 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "11:20"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, te recordamos que mañana 15/09/2026 a las 08:00 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* con Dr. Zaragozá (Implantología) 🦷.\n\n📍 Te esperamos en la clínica. Si necesitas cualquier consulta o cambio de horario, puedes llamarnos o escribirnos por aquí.\n\n¡Que tengas un buen día!",
+        "time": "11:21"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, te informamos que tu cita en la *Clínica Dental Dr. Zaragozá* ha sido reprogramada para el 14/09/2026 a las 08:00 🦷.",
+        "time": "11:21"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola CLARA, te informamos que tu cita en la *Clínica Dental Dr. Zaragozá* ha sido reprogramada para el 04/09/2026 a las 08:00 🦷.",
+        "time": "11:21"
+      }
+    ],
+    "+34612345678": [
+      {
+        "sender": "bot",
+        "text": "Hola Paciente Cola 1, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 04/09/2026 a las 18:42 con Dr. Zaragozá 🦷. ¡Te esperamos!",
+        "time": "18:42"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Paciente Cola 1, te recordamos que mañana 04/09/2026 a las 18:42 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:43"
+      }
+    ],
+    "+34622334455": [
+      {
+        "sender": "bot",
+        "text": "Hola Paciente Cola 2, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido programada para el 05/09/2026 a las 18:42 con Dra. Martínez 🦷. ¡Te esperamos!",
+        "time": "18:42"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Paciente Cola 2, te recordamos que mañana 05/09/2026 a las 18:42 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* 📲.\n\nPor favor, responde a este mensaje para gestionar tu turno:\n1️⃣ Escribe *CONFIRMAR* para asegurar tu asistencia.\n2️⃣ Escribe *CANCELAR* si deseas liberar el hueco.",
+        "time": "18:43"
+      }
+    ],
+    "+34611223344": [
+      {
+        "sender": "patient",
+        "text": "cancelo la cita, no podre asistir",
+        "time": "18:55"
+      },
+      {
+        "sender": "bot",
+        "text": "Entendido. Hemos cancelado tu cita y liberado el turno. Si deseas reagendar, escríbenos o llámanos. ¡Que tengas buen día!",
+        "time": "18:55"
+      },
+      {
+        "sender": "patient",
+        "text": "1️⃣ Si, confirmo",
+        "time": "18:55"
+      },
+      {
+        "sender": "bot",
+        "text": "¡Perfecto, Elena Navarro! Tu cita en la *Clínica Dental Dr. Zaragozá* queda confirmada. ¡Te esperamos!",
+        "time": "18:55"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Prueba Borrado, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido agendada para el 05/09/2026 a las 12:00 con Dr. Zaragozá 🦷. ¡Te esperamos!",
+        "time": "11:18"
+      }
+    ],
+    "+34677889900": [
+      {
+        "sender": "bot",
+        "text": "Hola Lucas Méndez, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido agendada para el 03/09/2026 a las 11:30 con Dr. Zaragozá 🦷. ¡Te esperamos!",
+        "time": "20:46"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Lucas Méndez, te recordamos que mañana 03/09/2026 a las 11:30 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* con Dr. Zaragozá 🦷.\n\n📍 Te esperamos en la clínica. Si precisas cualquier consulta o cambio de horario, puedes llamarnos o escribirnos por aquí.\n\n¡Que tengas un buen día!",
+        "time": "20:46"
+      },
+      {
+        "sender": "patient",
+        "text": "Muchas gracias, allí estaré puntual.",
+        "time": "20:49"
+      }
+    ],
+    "+34655223344": [
+      {
+        "sender": "bot",
+        "text": "Hola Sofía Valero, tu cita en la *Clínica Dental Dr. Zaragozá* ha sido agendada para el 04/09/2026 a las 16:00 con Dr. Zaragozá (Implantología) 🦷. ¡Te esperamos!",
+        "time": "11:07"
+      },
+      {
+        "sender": "bot",
+        "text": "Hola Sofía Valero, te recordamos que mañana 04/09/2026 a las 16:00 tienes tu consulta en la *Clínica Dental Dr. Zaragozá* con Dr. Zaragozá (Implantología) 🦷.\n\n📍 Te esperamos en la clínica. Si necesitas cualquier consulta o cambio de horario, puedes llamarnos o escribirnos por aquí.\n\n¡Que tengas un buen día!",
+        "time": "11:07"
+      }
+    ]
+  },
+  "settings": {
+    "subscription_active": true,
+    "test_mode": true
+  }
+}

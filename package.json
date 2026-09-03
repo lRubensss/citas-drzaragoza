@@ -1,0 +1,43 @@
+{
+  "name": "clinica-zaragoza-whatsapp-citas",
+  "version": "1.0.0",
+  "description": "Sistema automatizado de recordatorios y confirmación de citas por WhatsApp para la Clínica Dental Dr. Zaragozá",
+  "main": "src/server.js",
+  "scripts": {
+    "build": "echo 'Build successful - Ready for production'",
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "google-calendar",
+    "twilio",
+    "meta",
+    "automation",
+    "clinic"
+  ],
+  "author": "Dr. Zaragozá Tech Team",
+  "license": "MIT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "googleapis": "^140.0.1",
+    "isomorphic-git": "^1.41.9",
+    "luxon": "^3.7.2",
+    "pg": "^8.23.0",
+    "pino": "^9.14.0",
+    "pino-pretty": "^11.1.0",
+    "qrcode": "^1.5.4",
+    "twilio": "^5.1.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/luxon": "^3.4.2",
+    "@types/node": "^20.14.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

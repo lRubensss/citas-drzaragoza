@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citas · Dr. Zaragozá</title>
+  <!-- Favicon Oficial Diente 🦷 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦷</text></svg>">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- FullCalendar v6 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales/es.global.min.js"></script>
+
+  <!-- Flatpickr (Selector de Fecha y Hora con botón Aceptar personalizado, sin 'Borrar' ni 'Hoy') -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+  <style>
+    :root {
+      --primary: #F36279;
+      --primary-hover: #E05269;
+      --primary-light: #FDE8EC;
+      --bg-page: #FAFAFB;
+      --card-bg: #FFFFFF;
+      --text-main: #2D3748;
+      --text-muted: #718096;
+      --border-color: #E2E8F0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* FullCalendar Styling - Medical & Spacious */
+    .fc {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .fc-header-toolbar {
+      margin-bottom: 1.25rem !important;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .fc-toolbar-title {
+      font-size: 1.35rem !important;
+      font-weight: 700 !important;
+      color: var(--text-main) !important;
+      letter-spacing: -0.02em;
+      text-transform: capitalize;
+    }
+    .fc-button-primary {
+      background-color: #FFFFFF !important;
+      color: #4A5568 !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 0.75rem !important;
+      font-weight: 600 !important;
+      font-size: 0.85rem !important;
+      padding: 0.45rem 0.9rem !important;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+      transition: all 0.15s ease;
+    }
+    .fc-button-primary:hover {
+      background-color: #F7FAFC !important;
+      border-color: #CBD5E0 !important;
+      color: var(--text-main) !important;
+    }
+    .fc-button-active {
+      background-color: var(--primary) !important;
+      border-color: var(--primary) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 6px rgba(243, 98, 121, 0.3) !important;
+    }
+    .fc-button-primary:disabled {
+      opacity: 0.5;
+      background-color: #EDF2F7 !important;
+    }
+    /* Generous slot heights */
+    .fc-timegrid-slot {
+      height: 52px !important;
+    }
+    .fc-timegrid-slot-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .fc-col-header-cell {
+      padding: 0.65rem 0 !important;
+      background-color: #FAFAFB;
+      font-weight: 600;
+      color: #4A5568;
+      border-color: var(--border-color) !important;
+      font-size: 0.85rem;
+    }
+    .fc-theme-standard td, .fc-theme-standard th {
+      border-color: #EDF2F7 !important;
+    }
+    /* Event Card in FullCalendar: White card with 4px left border in #F36279 */
+    .fc-timegrid-event, .fc-daygrid-event {
+      background-color: #FFFFFF !important;
+      border: 1px solid var(--border-color) !important;
+      border-left: 4px solid var(--primary) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+      padding: 4px 6px !important;
+      color: var(--text-main) !important;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+    }
+    .fc-timegrid-event:hover, .fc-daygrid-event:hover {
+      box-shadow: 0 4px 10px rgba(243, 98, 121, 0.2) !important;
+      border-color: var(--primary) !important;
+      transform: translateY(-1px);
+    }
+    .fc-timegrid-event .fc-event-main, .fc-daygrid-event .fc-event-main {
+      color: var(--text-main) !important;
+      padding: 0;
+    }
+    .fc-timegrid-event .fc-event-time {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.75rem;
+    }
+    .fc-timegrid-event .fc-event-title {
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 0.8rem;
+    }
+
+    /* Flatpickr Custom Styling - Blanco & #F36279 (Elimina 'Borrar' y 'Hoy', incorpora botón 'Aceptar') */
+    .flatpickr-calendar {
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 1rem !important;
+      box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.14), 0 8px 12px -6px rgba(0, 0, 0, 0.06) !important;
+      font-family: 'Inter', system-ui, sans-serif !important;
+      overflow: hidden !important;
+      z-index: 99999 !important;
+    }
+    .flatpickr-months {
+      background: #FAFAFB !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      padding: 6px 0 !important;
+    }
+    .flatpickr-current-month {
+      font-weight: 700 !important;
+      color: var(--text-main) !important;
+      font-size: 0.95rem !important;
+    }
+    .flatpickr-weekday {
+      color: var(--text-muted) !important;
+      font-weight: 600 !important;
+      font-size: 0.75rem !important;
+    }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+      background: var(--primary) !important;
+      border-color: var(--primary) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+    }
+    .flatpickr-day:hover {
+      background: var(--primary-light) !important;
+      border-color: var(--primary) !important;
+      color: var(--primary) !important;
+    }
+    .flatpickr-day.today {
+      border-color: var(--primary) !important;
+    }
+    .flatpickr-time {
+      border-top: 1px solid var(--border-color) !important;
+      background: #FAFAFB !important;
+      padding: 6px 0 !important;
+    }
+    .flatpickr-time input {
+      font-weight: 700 !important;
+      color: var(--text-main) !important;
+    }
+    .flatpickr-time input:hover, .flatpickr-time input:focus {
+      background: var(--primary-light) !important;
+      color: var(--primary) !important;
+    }
+    .flatpickr-custom-footer {
+      padding: 8px 12px 10px;
+      border-top: 1px solid var(--border-color);
+      background: #FFFFFF;
+      display: flex;
+    }
+    .flatpickr-btn-accept {
+      width: 100%;
+      padding: 8px 14px;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 0.65rem;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 5px rgba(243, 98, 121, 0.3);
+    }
+    .flatpickr-btn-accept:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 4px 10px rgba(243, 98, 121, 0.4);
+    }
+
+    /* Modal animation */
+    .modal-enter {
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
+</head>
+<body class="text-[#2D3748] antialiased min-h-screen flex flex-col">
+
+  <!-- ============================================================== -->
+  <!-- CABECERA PRINCIPAL: IDENTIDAD BLANCO & CORAL/ROSA #F36279      -->
+  <!-- ============================================================== -->
+  <header class="bg-white border-b border-[#E2E8F0] sticky top-0 z-40 shadow-xs">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- LOGO Y TÍTULO DE LA CLÍNICA -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-10 h-10 rounded-xl bg-[#FDE8EC] text-[#F36279] flex items-center justify-center text-xl shadow-xs border border-[#F36279]/20 font-bold">
+          🦷
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-[#2D3748]">
+              Clínica Dental Dr. Zaragozá - Gestión de Citas
+            </h1>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-[#FDE8EC] text-[#F36279] rounded-full border border-[#F36279]/30">
+              Oficial
+            </span>
+          </div>
+          <p class="text-xs text-[#718096]">
+            doctorzaragoza.com &bull; <span id="clock-madrid" class="font-medium text-[#4A5568]">11:00 (Madrid)</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- CONTROLES Y ACCIONES SUPERIORES -->
+      <div class="flex flex-wrap items-center gap-3">
+        
+        <!-- ESTADO DE WHATSAPP OFICIAL (+34 610 81 28 35) -->
+        <button 
+          onclick="openWhatsAppModal()" 
+          id="whatsapp-badge-btn" 
+          title="Ver estado de conexión WhatsApp"
+          class="flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-2xs cursor-pointer"
+        >
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <i class="fa-brands fa-whatsapp text-sm text-emerald-600"></i>
+          <span id="whatsapp-status-text">Conectando...</span>
+        </button>
+
+        <!-- SWITCH MODO PRUEBAS (1 MINUTO) -->
+        <div class="flex items-center space-x-2 bg-[#FAFAFB] px-3.5 py-1.5 rounded-full border border-[#E2E8F0]">
+          <span class="text-xs font-medium text-[#4A5568] flex items-center gap-1.5">
+            <i class="fa-solid fa-stopwatch text-[#F36279]"></i> Modo Test (1 min)
+          </span>
+          <button 
+            id="test-mode-toggle"
+            onclick="toggleTestMode()"
+            title="Alternar modo de pruebas rápidas (recordatorio a los 60s)"
+            class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-[#F36279]"
+          >
+            <span id="test-mode-indicator" class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-4"></span>
+          </button>
+        </div>
+
+        <!-- BOTÓN PRINCIPAL: NUEVA CITA -->
+        <button 
+          onclick="openCreateModal()" 
+          class="px-5 py-2 bg-[#F36279] hover:bg-[#E05269] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm hover:shadow-md cursor-pointer"
+        >
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Nueva Cita</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- CONTENEDOR PRINCIPAL: CALENDARIO PROTAGONISTA A ANCHO COMPLETO -->
+  <!-- ============================================================== -->
+  <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full flex flex-col space-y-4">
+
+    <!-- CONTENEDOR DE ALERTAS DE DESCONEXIÓN (SOLO SI SOCKET ESTÁ DESCONECTADO) -->
+    <div id="alerts-container" class="hidden space-y-2">
+      <!-- Generado dinámicamente si WhatsApp pierde conexión -->
+    </div>
+
+    <!-- CALENDARIO FULLCALENDAR V6 (ESPACIOSO Y ELEGANTE) -->
+    <div class="bg-white rounded-2xl shadow-xs border border-[#E2E8F0] p-4 sm:p-6 flex-1 flex flex-col">
+      
+      <!-- SUB-BARRA INFORMATIVA LIMPIA (SIN LEYENDAS OBSOLETAS) -->
+      <div class="flex flex-wrap items-center justify-between mb-4 pb-3 border-b border-[#E2E8F0] text-xs text-[#718096] gap-2">
+        <div class="flex items-center space-x-2">
+          <span class="inline-flex items-center gap-1.5 font-bold text-[#2D3748] text-sm">
+            <i class="fa-solid fa-calendar-check text-[#F36279]"></i> Agenda de Citas Dr. Zaragozá
+          </span>
+          <span class="text-[#CBD5E0]">|</span>
+          <span class="text-xs text-[#4A5568] flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#F36279]"></span> Notificaciones automáticas activas (+34 610 81 28 35)
+          </span>
+        </div>
+        <div class="italic text-[#718096]">
+          💡 Haz clic sobre cualquier hora libre para agendar o arrastra la tarjeta para reprogramar
+        </div>
+      </div>
+
+      <!-- ÁREA DEL CALENDARIO -->
+      <div id="calendar" class="min-h-[720px] flex-1"></div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: AGENDAR NUEVA CITA (CON BOTÓN ACEPTAR/GUARDAR DESTACADO)-->
+  <!-- ============================================================== -->
+  <div id="modal-create" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center hidden p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-[#E2E8F0] flex flex-col overflow-hidden modal-enter">
+      
+      <!-- CABECERA DEL MODAL -->
+      <div class="p-5 border-b border-[#E2E8F0] flex items-center justify-between bg-[#FAFAFB]">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-[#FDE8EC] text-[#F36279] flex items-center justify-center font-bold text-lg border border-[#F36279]/20">
+            🦷
+          </div>
+          <div>
+            <h3 class="font-bold text-[#2D3748] text-base leading-tight">Agendar Cita en Calendario</h3>
+            <p class="text-xs text-[#718096]">Clínica Dental Dr. Zaragozá</p>
+          </div>
+        </div>
+        <button onclick="closeCreateModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <!-- FORMULARIO DE CITA (CUERPO CON SCROLL SEPARADO DEL FOOTER) -->
+      <form id="form-create-appt" onsubmit="handleCreateAppointment(event)" class="flex flex-col flex-1">
+        
+        <div class="p-5 sm:p-6 space-y-4 text-xs max-h-[65vh] overflow-y-auto">
+          
+          <!-- NOMBRE DEL PACIENTE -->
+          <div>
+            <label class="block font-semibold text-[#2D3748] mb-1.5">
+              Nombre Completo del Paciente <span class="text-[#F36279]">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="form-patient-name" 
+              required 
+              placeholder="Ej. Carmen Martínez Sánchez" 
+              class="w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-sm text-[#2D3748] focus:outline-none focus:border-[#F36279] focus:bg-white transition"
+            />
+          </div>
+
+          <!-- TELÉFONO WHATSAPP -->
+          <div>
+            <label class="block font-semibold text-[#2D3748] mb-1.5">
+              Teléfono WhatsApp del Paciente <span class="text-[#F36279]">*</span>
+            </label>
+            <input 
+              type="tel" 
+              id="form-patient-phone" 
+              required 
+              placeholder="+34612345678" 
+              value="+346" 
+              class="w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-sm text-[#2D3748] font-mono focus:outline-none focus:border-[#F36279] focus:bg-white transition"
+            />
+            <p class="text-[11px] text-[#718096] mt-1">
+              Formato internacional con prefijo (se autoajusta a <span class="font-mono text-[#F36279] font-semibold">+34...</span> para España).
+            </p>
+          </div>
+
+          <!-- ESPECIALISTA Y TRATAMIENTO -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-[#2D3748] mb-1.5">Especialista</label>
+              <select 
+                id="form-specialist" 
+                class="w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#2D3748] focus:outline-none focus:border-[#F36279] focus:bg-white transition cursor-pointer"
+              >
+                <option value="Dr. Zaragozá (Implantología)">Dr. Zaragozá (Implantología)</option>
+                <option value="Dra. Martínez (Ortodoncia)">Dra. Martínez (Ortodoncia)</option>
+                <option value="Dra. Vicente (Higiene Dental)">Dra. Vicente (Higiene Dental)</option>
+                <option value="Equipo Dr. Zaragozá">Equipo Dr. Zaragozá</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-[#2D3748] mb-1.5">Tratamiento</label>
+              <select 
+                id="form-treatment" 
+                class="w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#2D3748] focus:outline-none focus:border-[#F36279] focus:bg-white transition cursor-pointer"
+              >
+                <option value="Revisión General">Revisión General</option>
+                <option value="Limpieza Dental">Limpieza Dental</option>
+                <option value="Implante Dental">Implante Dental</option>
+                <option value="Ortodoncia Invisible">Ortodoncia Invisible</option>
+                <option value="Extracción / Cirugía">Extracción / Cirugía</option>
+                <option value="Estética Dental / Blanqueamiento">Estética / Blanqueamiento</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- FECHA Y HORA -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="font-semibold text-[#2D3748]">
+                Fecha y Hora de la Cita <span class="text-[#F36279]">*</span>
+              </label>
+              <button 
+                type="button" 
+                onclick="fillQuick2MinTest()" 
+                class="text-[11px] text-[#F36279] hover:underline font-semibold flex items-center cursor-pointer"
+              >
+                <i class="fa-solid fa-bolt mr-1 text-amber-500"></i> Probar en 2 minutos
+              </button>
+            </div>
+            <input 
+              type="text" 
+              id="form-datetime" 
+              required 
+              placeholder="Haz clic para seleccionar fecha y hora..."
+              readonly="readonly"
+              class="w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-sm text-[#2D3748] focus:outline-none focus:border-[#F36279] focus:bg-white transition cursor-pointer font-medium"
+            />
+          </div>
+
+          <!-- NOTAS / OBSERVACIONES -->
+          <div>
+            <label class="block font-semibold text-[#2D3748] mb-1.5">Observaciones de Recepción</label>
+            <textarea 
+              id="form-notes" 
+              rows="2" 
+              placeholder="Detalles sobre historial médico o motivo específico..." 
+              class="w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2 text-xs text-[#2D3748] focus:outline-none focus:border-[#F36279] focus:bg-white transition"
+            ></textarea>
+          </div>
+
+          <!-- MODO PRUEBAS CHECKBOX -->
+          <div class="p-3 rounded-xl bg-[#FAFAFB] border border-[#E2E8F0] flex items-center justify-between">
+            <label class="flex items-center space-x-2.5 cursor-pointer select-none">
+              <input 
+                type="checkbox" 
+                id="form-test-mode-check" 
+                checked 
+                class="w-4 h-4 text-[#F36279] rounded border-slate-300 focus:ring-[#F36279] accent-[#F36279] cursor-pointer" 
+              />
+              <span class="font-semibold text-[#2D3748] text-xs">Modo Pruebas (Recordatorio en 1 min)</span>
+            </label>
+            <span class="text-[10px] text-[#F36279] bg-[#FDE8EC] px-2 py-0.5 rounded font-mono font-bold">60 seg</span>
+          </div>
+
+          <!-- CUADRO INFORMATIVO DE MENSAJES -->
+          <div class="bg-[#FDE8EC]/60 border border-[#F36279]/30 p-3 rounded-xl text-[11px] text-[#2D3748] flex items-start space-x-2.5">
+            <i class="fa-solid fa-circle-info text-[#F36279] mt-0.5 text-sm"></i>
+            <div class="space-y-1">
+              <p><strong>• Mensaje 1 (Inmediato):</strong> Confirmación informativa al agendar desde +34 610 81 28 35.</p>
+              <p><strong>• Mensaje 2 (Recordatorio):</strong> 24h antes (o 60s en test) recordando consulta de forma 100% informativa.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- FOOTER DESTACADO Y FIJO: BOTONES [CANCELAR] Y [ACEPTAR]  -->
+        <!-- ======================================================== -->
+        <div class="p-4 bg-[#FAFAFB] border-t border-[#E2E8F0] flex items-center justify-between gap-3 shrink-0">
+          <button 
+            type="button" 
+            onclick="closeCreateModal()" 
+            class="px-5 py-2.5 bg-[#EDF2F7] hover:bg-[#E2E8F0] text-[#4A5568] font-semibold rounded-xl text-xs sm:text-sm transition cursor-pointer"
+          >
+            Cancelar
+          </button>
+          
+          <button 
+            type="submit" 
+            id="btn-save-appt" 
+            class="px-7 py-2.5 bg-[#F36279] hover:bg-[#E05269] text-white font-bold rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <i class="fa-solid fa-check"></i>
+            <span id="btn-save-text">Guardar Cita</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: DETALLE DE CITA EXISTENTE                               -->
+  <!-- ============================================================== -->
+  <div id="modal-detail" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center hidden p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-[#E2E8F0] modal-enter">
+      
+      <div class="flex justify-between items-start pb-3 border-b border-[#E2E8F0] mb-3">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#FDE8EC] text-[#F36279] border border-[#F36279]/30">
+            <i class="fa-solid fa-calendar-check mr-1"></i> Cita Programada
+          </span>
+          <h3 id="detail-patient-name" class="font-bold text-[#2D3748] text-base mt-1.5">Nombre Paciente</h3>
+        </div>
+        <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs text-[#4A5568] mb-4">
+        <p><strong class="text-[#2D3748]">Teléfono:</strong> <span id="detail-patient-phone" class="font-mono text-[#2D3748] font-semibold">+34...</span></p>
+        <p><strong class="text-[#2D3748]">Especialista:</strong> <span id="detail-specialist">Dr. Zaragozá</span></p>
+        <p><strong class="text-[#2D3748]">Tratamiento:</strong> <span id="detail-treatment">Revisión General</span></p>
+        <p><strong class="text-[#2D3748]">Fecha y Hora:</strong> <span id="detail-datetime" class="font-semibold text-[#F36279]">--</span></p>
+        <p><strong class="text-[#2D3748]">Notas:</strong> <span id="detail-notes" class="italic text-[#718096]">Sin observaciones</span></p>
+      </div>
+
+      <div class="flex flex-col space-y-2 pt-3 border-t border-[#E2E8F0]">
+        <div class="flex space-x-2">
+          <button 
+            onclick="fireReminderForCurrentDetail()" 
+            class="flex-1 py-2.5 bg-[#FDE8EC] hover:bg-[#fbd3db] text-[#F36279] font-bold border border-[#F36279]/30 rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <i class="fa-solid fa-bolt text-amber-500"></i> Disparar Recordatorio
+          </button>
+          
+          <button 
+            onclick="deleteCurrentDetail()" 
+            title="Eliminar cita"
+            class="py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <i class="fa-solid fa-trash-can text-rose-500"></i> Eliminar Cita
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: CONEXIÓN WHATSAPP QR (BAILEYS - LÍNEA +34 610 81 28 35) -->
+  <!-- ============================================================== -->
+  <div id="modal-whatsapp" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center hidden p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#E2E8F0] modal-enter">
+      
+      <div class="flex justify-between items-center pb-3 border-b border-[#E2E8F0] mb-4">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg border border-emerald-200">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-[#2D3748] text-base">Vinculación WhatsApp Oficial</h3>
+            <p class="text-xs text-[#718096]">Línea Oficial: +34 610 81 28 35</p>
+          </div>
+        </div>
+        <button onclick="closeWhatsAppModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <!-- ESTADO Y CÓDIGO QR -->
+      <div class="text-center py-2 space-y-4">
+        <div class="flex items-center justify-center space-x-2">
+          <span id="modal-wa-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-50 text-amber-800 border border-amber-200">
+            COMPROBANDO...
+          </span>
+        </div>
+
+        <p id="modal-wa-status" class="text-xs text-[#718096]">
+          Verificando sesión activa con WhatsApp Web...
+        </p>
+
+        <!-- CONTENEDOR DEL CÓDIGO QR -->
+        <div class="w-64 h-64 mx-auto border-2 border-dashed border-[#E2E8F0] rounded-2xl flex items-center justify-center bg-[#FAFAFB] p-2 relative overflow-hidden">
+          <img id="qr-image" src="" alt="QR WhatsApp" class="w-full h-full object-contain hidden" />
+          <div id="qr-placeholder" class="text-center p-4 text-[#718096]">
+            <i class="fa-solid fa-qrcode text-4xl mb-2 text-slate-300"></i>
+            <p class="text-xs font-medium">Cargando código QR...</p>
+          </div>
+        </div>
+
+        <div class="bg-[#FAFAFB] p-3 rounded-xl border border-[#E2E8F0] text-[11px] text-[#4A5568] text-left space-y-1">
+          <p class="font-bold text-[#2D3748]">Instrucciones de Vinculación:</p>
+          <p>1. Abre WhatsApp en el móvil oficial de la clínica (<strong>+34 610 81 28 35</strong>).</p>
+          <p>2. Ve a <strong>Ajustes &gt; Dispositivos vinculados &gt; Vincular un dispositivo</strong>.</p>
+          <p>3. Escanea este código QR con la cámara del teléfono.</p>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-[#E2E8F0] flex justify-between gap-2">
+        <button 
+          onclick="disconnectWhatsApp()" 
+          class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold rounded-xl border border-rose-200 transition cursor-pointer"
+        >
+          <i class="fa-solid fa-power-off mr-1"></i> Desvincular / Reset QR
+        </button>
+        <button 
+          onclick="closeWhatsAppModal()" 
+          class="px-5 py-2 bg-[#F36279] hover:bg-[#E05269] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-xs"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ============================================================== -->
+  <!-- SCRIPTS Y LÓGICA DE GESTIÓN CLIENTE                            -->
+  <!-- ============================================================== -->
+  <script>
+    let calendar;
+    let selectedAppointmentId = null;
+    let isTestMode = true;
+    let currentDetailAppointment = null;
+    let currentDetailId = null;
+    let currentWhatsAppConnected = false;
+    let datetimePickerInstance = null;
+
+    // Inicialización al cargar el DOM
+    document.addEventListener('DOMContentLoaded', async () => {
+      initClock();
+      initFullCalendar();
+      initDateTimePicker();
+      await checkWhatsAppStatus();
+      await loadSettings();
+      await loadAppointmentsData();
+
+      // Validación y auto-formato internacional +34...
+      const phoneInput = document.getElementById('form-patient-phone');
+      if (phoneInput) {
+        phoneInput.addEventListener('blur', function() {
+          let val = this.value.trim().replace(/[\s-]/g, '');
+          if (/^[67]\d{8}$/.test(val)) {
+            this.value = '+34' + val;
+          } else if (/^34[67]\d{8}$/.test(val)) {
+            this.value = '+' + val;
+          } else if (!val.startsWith('+') && val.length >= 9) {
+            this.value = '+' + val;
+          }
+        });
+      }
+
+      // Sondeo periódico cada 3 segundos
+      setInterval(loadAppointmentsData, 3000);
+      setInterval(checkWhatsAppStatus, 4000);
+    });
+
+    // Inicializar Flatpickr con botón [Aceptar] exclusivo (sin 'Borrar' ni 'Hoy')
+    function initDateTimePicker() {
+      datetimePickerInstance = flatpickr("#form-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d\\TH:i",
+        altInput: true,
+        altFormat: "d/m/Y - H:i",
+        altInputClass: "w-full bg-[#FAFAFB] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-sm text-[#2D3748] focus:outline-none focus:border-[#F36279] focus:bg-white transition cursor-pointer font-medium",
+        locale: "es",
+        time_24hr: true,
+        minuteIncrement: 15,
+        defaultHour: 10,
+        disableMobile: true, // Forzar selector estilizado (elimina los botones nativos 'Borrar' y 'Hoy')
+        onReady: function(selectedDates, dateStr, instance) {
+          // Barra inferior exclusiva con botón "Aceptar"
+          const footer = document.createElement('div');
+          footer.className = 'flatpickr-custom-footer';
+          footer.innerHTML = `
+            <button type="button" class="flatpickr-btn-accept">
+              <i class="fa-solid fa-check mr-1.5"></i> Aceptar
+            </button>
+          `;
+          footer.querySelector('.flatpickr-btn-accept').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            instance.close();
+          });
+          instance.calendarContainer.appendChild(footer);
+        }
+      });
+    }
+
+    // Reloj Peninsular (Europe/Madrid)
+    function initClock() {
+      const clockEl = document.getElementById('clock-madrid');
+      setInterval(() => {
+        const now = new Date();
+        clockEl.innerText = now.toLocaleTimeString('es-ES', { 
+          timeZone: 'Europe/Madrid', 
+          hour: '2-digit', 
+          minute: '2-digit', 
+          second: '2-digit' 
+        }) + ' (Madrid)';
+      }, 1000);
+    }
+
+    // Inicializar FullCalendar v6 (Espacioso y con tarjeta blanca / borde #F36279)
+    function initFullCalendar() {
+      const calendarEl = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        locale: 'es',
+        firstDay: 1, // Lunes
+        slotMinTime: '08:00:00',
+        slotMaxTime: '21:00:00',
+        allDaySlot: false,
+        slotDuration: '00:30:00',
+        nowIndicator: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        buttonText: {
+          today: 'Hoy',
+          month: 'Mes',
+          week: 'Semana',
+          day: 'Día'
+        },
+        editable: true,
+        selectable: true,
+        events: '/api/appointments/calendar',
+        
+        // Clic en hueco libre -> Nueva Cita
+        select: function(info) {
+          openCreateModal(info.startStr);
+        },
+
+        // Clic en tarjeta de cita existente -> Detalle
+        eventClick: function(info) {
+          openDetailModal(info.event);
+        },
+
+        // Arrastrar y soltar (Drag & Drop) -> Reprogramación
+        eventDrop: async function(info) {
+          try {
+            const res = await fetch(`/api/appointments/${info.event.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ appointment_datetime: info.event.start.toISOString() })
+            });
+            if (res.ok) {
+              showToast('Cita reprogramada y paciente informado por WhatsApp.', 'success');
+              calendar.refetchEvents();
+            } else {
+              info.revert();
+              showToast('Error al reprogramar la cita.', 'error');
+            }
+          } catch (err) {
+            info.revert();
+            showToast('Fallo de conexión al reprogramar.', 'error');
+          }
+        }
+      });
+
+      calendar.render();
+    }
+
+    // Comprobar estado de WhatsApp QR (Baileys)
+    async function checkWhatsAppStatus() {
+      try {
+        const res = await fetch('/api/whatsapp/status');
+        const data = await res.json();
+        currentWhatsAppConnected = (data.status === 'CONNECTED');
+        
+        const badgeBtn = document.getElementById('whatsapp-badge-btn');
+        const statusText = document.getElementById('whatsapp-status-text');
+        const modalStatus = document.getElementById('modal-wa-status');
+        const modalBadge = document.getElementById('modal-wa-badge');
+        const qrImage = document.getElementById('qr-image');
+        const qrPlaceholder = document.getElementById('qr-placeholder');
+
+        if (data.status === 'CONNECTED') {
+          badgeBtn.className = 'flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-2xs cursor-pointer';
+          statusText.innerText = `Conectado: ${data.officialPhone || '+34 610 81 28 35'}`;
+          modalStatus.innerText = `Vinculado al número oficial (${data.connectedPhone || data.officialPhone})`;
+          modalBadge.innerText = 'CONECTADO';
+          modalBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300';
+          qrImage.classList.add('hidden');
+          qrPlaceholder.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500 text-5xl mb-2"></i><p class="font-bold text-[#2D3748]">WhatsApp Oficial Vinculado</p><p class="text-xs text-[#718096]">Línea lista para envíos informativos.</p>';
+        } else if (data.status === 'SCAN_QR' && data.qr) {
+          badgeBtn.className = 'flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition shadow-2xs cursor-pointer';
+          statusText.innerText = 'WhatsApp: Escanear QR (+34 610 81 28 35)';
+          modalStatus.innerText = 'Esperando escaneo desde la app de WhatsApp';
+          modalBadge.innerText = 'ESCANEAR QR';
+          modalBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-100 text-amber-800 border border-amber-300 animate-pulse';
+          qrPlaceholder.classList.add('hidden');
+          qrImage.src = data.qr;
+          qrImage.classList.remove('hidden');
+        } else {
+          badgeBtn.className = 'flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition shadow-2xs cursor-pointer';
+          statusText.innerText = 'WhatsApp Desconectado';
+          modalStatus.innerText = 'Desconectado: Generando nuevo código...';
+          modalBadge.innerText = 'DESCONECTADO';
+          modalBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-rose-100 text-rose-800 border border-rose-300';
+        }
+      } catch (err) {
+        console.error("Error verificando WhatsApp:", err);
+      }
+    }
+
+    // Modal WhatsApp
+    function openWhatsAppModal() {
+      document.getElementById('modal-whatsapp').classList.remove('hidden');
+      checkWhatsAppStatus();
+    }
+    function closeWhatsAppModal() {
+      document.getElementById('modal-whatsapp').classList.add('hidden');
+    }
+    async function disconnectWhatsApp() {
+      if (confirm("¿Deseas resetear y generar un nuevo código QR para el teléfono oficial?")) {
+        await fetch('/api/whatsapp/disconnect', { method: 'POST' });
+        await checkWhatsAppStatus();
+      }
+    }
+
+    // Cargar y gestionar ajustes (Modo Pruebas)
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        isTestMode = data.test_mode;
+        updateTestModeUI();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function updateTestModeUI() {
+      const toggle = document.getElementById('test-mode-toggle');
+      const indicator = document.getElementById('test-mode-indicator');
+      const formCheck = document.getElementById('form-test-mode-check');
+
+      if (isTestMode) {
+        toggle.className = 'relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-[#F36279]';
+        indicator.className = 'pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-4';
+        if (formCheck) formCheck.checked = true;
+      } else {
+        toggle.className = 'relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-slate-300';
+        indicator.className = 'pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-0';
+        if (formCheck) formCheck.checked = false;
+      }
+    }
+
+    async function toggleTestMode() {
+      isTestMode = !isTestMode;
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ test_mode: isTestMode })
+      });
+      updateTestModeUI();
+      showToast(isTestMode ? 'Modo Test activado (recordatorio en 1 min).' : 'Modo Producción activado (recordatorio 24h antes).', 'info');
+    }
+
+    // Cargar Citas y Alertas
+    async function loadAppointmentsData() {
+      try {
+        const alertsRes = await fetch('/api/alerts');
+        if (alertsRes.ok) {
+          const alerts = await alertsRes.json();
+          renderAlerts(alerts);
+        }
+      } catch (err) {
+        console.error("Error sincronizando:", err);
+      }
+    }
+
+    // Renderizar Alertas (Solo si WhatsApp está desconectado)
+    function renderAlerts(alerts) {
+      const container = document.getElementById('alerts-container');
+      if (!alerts || alerts.length === 0 || currentWhatsAppConnected) {
+        container.innerHTML = '';
+        container.classList.add('hidden');
+        return;
+      }
+
+      const filtered = alerts.filter(a => a.type === 'WHATSAPP_DESCONECTADO');
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        container.classList.add('hidden');
+        return;
+      }
+
+      container.classList.remove('hidden');
+      container.innerHTML = filtered.slice(0, 1).map(a => `
+        <div id="${a.id}" class="bg-rose-50 border-l-4 border-[#F36279] p-3.5 rounded-r-xl shadow-xs flex items-start justify-between text-xs">
+          <div class="flex items-start space-x-2.5">
+            <i class="fa-solid fa-triangle-exclamation text-[#F36279] mt-0.5 text-sm"></i>
+            <div>
+              <p class="font-bold text-rose-950">WhatsApp Desconectado</p>
+              <p class="text-rose-800">${a.reason || 'Reconecte el teléfono oficial +34 610 81 28 35 escaneando el código QR.'}</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 shrink-0">
+            <button onclick="openWhatsAppModal()" class="px-2.5 py-1 bg-[#F36279] hover:bg-[#E05269] text-white rounded-lg font-bold text-[11px] transition cursor-pointer">
+              Escanear QR
+            </button>
+            <button onclick="dismissAlert('${a.id}')" title="Descartar" class="w-6 h-6 rounded-full bg-rose-200 hover:bg-rose-300 text-rose-900 flex items-center justify-center font-bold text-xs transition cursor-pointer">
+              ✖
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function dismissAlert(id) {
+      try {
+        await fetch(`/api/alerts/${id}`, { method: 'DELETE' });
+        loadAppointmentsData();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Modal Crear Cita
+    function fillQuick2MinTest() {
+      const now = new Date();
+      const in2min = new Date(now.getTime() + 2 * 60 * 1000);
+      if (datetimePickerInstance) {
+        datetimePickerInstance.setDate(in2min, true);
+      } else {
+        const isoLocal = new Date(in2min.getTime() - in2min.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('form-datetime').value = isoLocal;
+      }
+      if (!document.getElementById('form-patient-name').value) {
+        document.getElementById('form-patient-name').value = 'Paciente Prueba';
+      }
+    }
+
+    function openCreateModal(defaultDateStr) {
+      document.getElementById('modal-create').classList.remove('hidden');
+      
+      const now = new Date();
+      let targetDate;
+      if (defaultDateStr) {
+        targetDate = new Date(defaultDateStr);
+      } else {
+        targetDate = new Date(now.getTime() + 60 * 60 * 1000);
+      }
+
+      if (datetimePickerInstance) {
+        datetimePickerInstance.setDate(targetDate, true);
+      } else {
+        const isoLocal = new Date(targetDate.getTime() - targetDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('form-datetime').value = isoLocal;
+      }
+      
+      document.getElementById('form-test-mode-check').checked = isTestMode;
+      document.getElementById('form-patient-name').focus();
+    }
+
+    function closeCreateModal() {
+      document.getElementById('modal-create').classList.add('hidden');
+      document.getElementById('form-create-appt').reset();
+      if (datetimePickerInstance) {
+        datetimePickerInstance.clear();
+      }
+      
+      const btn = document.getElementById('btn-save-appt');
+      const btnText = document.getElementById('btn-save-text');
+      btn.disabled = false;
+      btnText.innerText = 'Guardar Cita';
+    }
+
+    // Envío del formulario de creación de cita
+    async function handleCreateAppointment(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-save-appt');
+      const btnText = document.getElementById('btn-save-text');
+
+      // Estado visual de carga
+      btn.disabled = true;
+      btnText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Guardando...';
+
+      let phoneVal = document.getElementById('form-patient-phone').value.trim().replace(/[\s-]/g, '');
+      if (/^[67]\d{8}$/.test(phoneVal)) {
+        phoneVal = '+34' + phoneVal;
+      } else if (/^34[67]\d{8}$/.test(phoneVal)) {
+        phoneVal = '+' + phoneVal;
+      }
+
+      const dtVal = document.getElementById('form-datetime').value;
+      if (!dtVal) {
+        alert('Por favor selecciona la fecha y hora de la cita.');
+        btn.disabled = false;
+        btnText.innerText = 'Guardar Cita';
+        return;
+      }
+
+      const payload = {
+        patient_name: document.getElementById('form-patient-name').value.trim(),
+        patient_phone: phoneVal,
+        specialist: document.getElementById('form-specialist').value,
+        treatment: document.getElementById('form-treatment').value,
+        appointment_datetime: dtVal,
+        notes: document.getElementById('form-notes').value.trim(),
+        test_mode: document.getElementById('form-test-mode-check').checked,
+      };
+
+      try {
+        const res = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          // Cerrar modal inmediatamente y actualizar el calendario
+          closeCreateModal();
+          calendar.refetchEvents();
+          showToast(`¡Cita guardada! Mensaje 1 enviado a ${payload.patient_name}.`, 'success');
+        } else {
+          alert('Error al guardar cita: ' + (data.error || 'Error desconocido'));
+          btn.disabled = false;
+          btnText.innerText = 'Guardar Cita';
+        }
+      } catch (err) {
+        console.error("Error creando cita:", err);
+        alert('Error de conexión con el servidor.');
+        btn.disabled = false;
+        btnText.innerText = 'Guardar Cita';
+      }
+    }
+
+    // Modal Detalle Cita
+    function openDetailModal(event) {
+      const ext = event.extendedProps || {};
+      currentDetailId = event.id || ext.id || '';
+
+      currentDetailAppointment = {
+        id: currentDetailId,
+        patient_name: ext.patient_name || event.title || 'Paciente',
+        patient_phone: ext.patient_phone || '',
+        specialist: ext.specialist || 'Dr. Zaragozá',
+        treatment: ext.treatment || 'Consulta',
+        notes: ext.notes || 'Sin observaciones',
+      };
+
+      document.getElementById('detail-patient-name').innerText = currentDetailAppointment.patient_name;
+      document.getElementById('detail-patient-phone').innerText = currentDetailAppointment.patient_phone;
+      document.getElementById('detail-specialist').innerText = currentDetailAppointment.specialist;
+      document.getElementById('detail-treatment').innerText = currentDetailAppointment.treatment;
+      document.getElementById('detail-datetime').innerText = event.start ? event.start.toLocaleString('es-ES', { 
+        weekday: 'short', 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      }) : '--';
+      document.getElementById('detail-notes').innerText = currentDetailAppointment.notes || 'Sin observaciones';
+
+      document.getElementById('modal-detail').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('modal-detail').classList.add('hidden');
+    }
+
+    async function fireReminderForCurrentDetail() {
+      const id = currentDetailId || currentDetailAppointment?.id;
+      if (!id) {
+        alert('Error: No se encontró el identificador de la cita.');
+        return;
+      }
+      try {
+        const res = await fetch(`/api/test/fire-reminder/${encodeURIComponent(id)}`, { method: 'POST' });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(`Recordatorio enviado a ${currentDetailAppointment?.patient_name || 'paciente'}.`, 'success');
+          closeDetailModal();
+        } else {
+          alert(data.error || 'No se pudo enviar el recordatorio.');
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Error de conexión con el servidor.');
+      }
+    }
+
+    async function deleteCurrentDetail() {
+      const id = currentDetailId || currentDetailAppointment?.id;
+      if (!id) {
+        alert('Error: No se pudo identificar la cita a eliminar.');
+        return;
+      }
+
+      const patient = currentDetailAppointment?.patient_name || 'este paciente';
+      if (!confirm(`¿Estás seguro de que deseas eliminar la cita de ${patient}? Esta acción liberará el turno en la agenda.`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/appointments/${encodeURIComponent(id)}`, { method: 'DELETE' });
+        const data = await res.json();
+
+        if (res.ok) {
+          showToast('Cita eliminada correctamente del calendario.', 'info');
+          closeDetailModal();
+          calendar.refetchEvents();
+        } else {
+          alert('Error al eliminar la cita: ' + (data.error || 'No se pudo eliminar'));
+        }
+      } catch (e) {
+        console.error("Error al eliminar cita:", e);
+        alert('Error de conexión al eliminar la cita.');
+      }
+    }
+
+    // Notificaciones Toast Modernas
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      let bg = 'bg-white border border-[#E2E8F0] text-[#2D3748]';
+      let icon = '<i class="fa-solid fa-circle-info text-[#F36279]"></i>';
+      
+      if (type === 'success') {
+        bg = 'bg-white border-l-4 border-[#F36279] border-y border-r border-[#E2E8F0] text-[#2D3748]';
+        icon = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+      } else if (type === 'error') {
+        bg = 'bg-white border-l-4 border-rose-500 border-y border-r border-[#E2E8F0] text-[#2D3748]';
+        icon = '<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>';
+      }
+
+      toast.className = `${bg} shadow-lg rounded-xl px-4 py-3 text-xs font-semibold flex items-center space-x-3 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `
+        <span class="text-base">${icon}</span>
+        <span>${escapeHtml(message)}</span>
+      `;
+
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function escapeHtml(string) {
+      const el = document.createElement('div');
+      el.innerText = string;
+      return el.innerHTML;
+    }
+  </script>
+</body>
+</html>

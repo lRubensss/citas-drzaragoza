@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦷 Clínica Dental Dr. Zaragozá - Gestión de Citas & WhatsApp</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#005073',
+              dark: '#0d3b66',
+              light: '#f4f7f6',
+              green: '#2A9D8F',
+              red: '#E76F51',
+              amber: '#E9C46A',
+              orange: '#F4A261'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FullCalendar v6 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.11/locales/es.global.min.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #F4F7F6; }
+    .chat-bg { background-color: #EFEAE2; background-image: radial-gradient(#D1D7DB 1px, transparent 1px); background-size: 16px 16px; }
+    
+    /* Personalización FullCalendar con estilo doctorzaragoza.com */
+    .fc { font-family: 'Inter', sans-serif; }
+    .fc .fc-toolbar-title { font-size: 1.2rem; font-weight: 700; color: #005073; }
+    .fc .fc-button-primary { background-color: #005073; border-color: #005073; border-radius: 0.5rem; font-weight: 500; font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+    .fc .fc-button-primary:hover { background-color: #0d3b66; border-color: #0d3b66; }
+    .fc .fc-button-primary:disabled { background-color: #94A3B8; border-color: #94A3B8; }
+    .fc .fc-button-active { background-color: #0d3b66 !important; }
+    .fc-theme-standard td, .fc-theme-standard th { border-color: #E2E8F0; }
+    .fc .fc-col-header-cell-cushion { color: #334155; font-size: 0.85rem; font-weight: 600; padding: 6px 0; }
+    .fc-timegrid-slot-label-cushion { color: #64748B; font-size: 0.75rem; }
+    .fc-event { border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.15s ease; padding: 2px 4px; }
+    .fc-event:hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+  <!-- TOP HEADER (Estilo doctorzaragoza.com) -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- LOGO & TITULO -->
+      <div class="flex items-center space-x-3">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#005073] to-[#0d3b66] text-white flex items-center justify-center text-2xl shadow-md">
+          🦷
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-bold text-lg text-[#005073] tracking-tight">Clínica Dental Dr. Zaragozá</h1>
+            <span class="text-[11px] bg-sky-100 text-sky-800 font-semibold px-2 py-0.5 rounded-full border border-sky-200">Panel Oficial</span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium">Agenda Médica Inteligente & Automatización WhatsApp</p>
+        </div>
+      </div>
+
+      <!-- SWITCH MODO PRUEBAS (1 MINUTO) & RELOJ -->
+      <div class="flex items-center space-x-4">
+        
+        <!-- CONTROL MODO PRUEBAS (1 MINUTO) -->
+        <div class="flex items-center bg-amber-50 border-2 border-amber-300 rounded-xl px-3.5 py-1.5 shadow-sm transition">
+          <label class="relative inline-flex items-center cursor-pointer mr-2.5">
+            <input type="checkbox" id="toggle-test-mode" checked onchange="toggleTestMode(this.checked)" class="sr-only peer">
+            <div class="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+          </label>
+          <div>
+            <div class="text-[11px] font-bold text-amber-900 flex items-center">
+              <span>MODO PRUEBAS (1 MINUTO)</span>
+              <span class="ml-1.5 flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              </span>
+            </div>
+            <p class="text-[10px] text-amber-700 font-medium leading-none mt-0.5">Recordatorios en 60s tras agendar</p>
+          </div>
+        </div>
+
+        <!-- RELOJ EUROPE/MADRID -->
+        <div class="hidden md:flex items-center bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl text-xs text-slate-700">
+          <i class="fa-regular fa-clock text-[#005073] mr-1.5"></i>
+          <span>Madrid:</span>
+          <span id="live-clock" class="ml-1 font-bold text-slate-900">--:--:--</span>
+        </div>
+
+        <!-- BOTÓN NUEVA CITA MANUAL -->
+        <button onclick="openCreateModal()" class="inline-flex items-center px-3.5 py-2 bg-[#005073] hover:bg-[#0d3b66] text-white rounded-xl text-xs font-semibold shadow-md transition transform active:scale-95">
+          <i class="fa-solid fa-calendar-plus mr-1.5 text-sm"></i>
+          Nueva Cita
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+    
+    <!-- COLUMNA PRINCIPAL: CALENDARIO INTERACTIVO (8 cols) -->
+    <section class="lg:col-span-8 flex flex-col space-y-4">
+      
+      <!-- CALENDARIO CARD -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-col flex-1">
+        
+        <!-- BARRA SUPERIOR DE INSTRUCCIONES & LEYENDA -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+          <div class="flex items-center space-x-2 text-xs text-slate-600">
+            <span class="font-semibold text-slate-800"><i class="fa-solid fa-hand-pointer text-[#005073] mr-1"></i> Tip:</span>
+            <span>Haz <strong>clic</strong> en una hora vacía para agendar o <strong>arrastra</strong> una cita para cambiar la hora.</span>
+          </div>
+
+          <!-- LEYENDA DE ESTADOS -->
+          <div class="flex flex-wrap items-center gap-2 text-[11px] font-medium">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-amber-900 bg-amber-100 border border-amber-300">
+              <span class="w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span> Pendiente
+            </span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-sky-900 bg-sky-100 border border-sky-300">
+              <span class="w-2 h-2 rounded-full bg-[#005073] mr-1.5"></span> Recordatorio Enviado
+            </span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-emerald-900 bg-emerald-100 border border-emerald-300">
+              <span class="w-2 h-2 rounded-full bg-[#2A9D8F] mr-1.5"></span> Confirmada
+            </span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-rose-900 bg-rose-100 border border-rose-300">
+              <span class="w-2 h-2 rounded-full bg-[#E76F51] mr-1.5"></span> Cancelada
+            </span>
+          </div>
+        </div>
+
+        <!-- FULLCALENDAR CONTAINER -->
+        <div id="calendar" class="flex-1 min-h-[580px]"></div>
+      </div>
+
+      <!-- BANNER DE ALERTAS A RECEPCIÓN -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-bell text-amber-500"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Alertas de Recepción en Tiempo Real</h3>
+          </div>
+          <span id="alert-counter" class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">0 alertas</span>
+        </div>
+        <div id="alerts-container" class="space-y-2 max-h-36 overflow-y-auto pr-1 text-xs">
+          <p class="text-slate-400 italic py-2 text-center">No hay alertas recientes en recepción.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- COLUMNA DERECHA: SIMULADOR DE WHATSAPP SMARTPHONE (4 cols) -->
+    <section class="lg:col-span-4 flex flex-col items-center">
+      <div class="w-full max-w-sm bg-slate-900 rounded-[2.5rem] p-3 shadow-2xl border-4 border-slate-800 flex flex-col h-[740px] sticky top-20">
+        
+        <!-- PANTALLA SMARTPHONE -->
+        <div class="bg-white rounded-[2rem] overflow-hidden flex flex-col h-full relative">
+          
+          <!-- WHATSAPP HEADER (Verde WhatsApp oficial) -->
+          <div class="bg-[#005073] text-white px-4 py-3 flex items-center justify-between shadow-md">
+            <div class="flex items-center space-x-3">
+              <div class="relative">
+                <div class="w-9 h-9 rounded-full bg-white text-[#005073] flex items-center justify-center font-bold text-sm shadow">
+                  🦷
+                </div>
+                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-[#005073] rounded-full"></span>
+              </div>
+              <div>
+                <h3 class="font-semibold text-sm leading-tight">Dr. Zaragozá</h3>
+                <p class="text-[10px] text-teal-100 flex items-center">
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 mr-1"></span> en línea (bot oficial)
+                </p>
+              </div>
+            </div>
+            
+            <div class="text-[10px] bg-white/20 backdrop-blur px-2 py-1 rounded text-white font-mono" id="active-phone-label">
+              +34 611 22 33 44
+            </div>
+          </div>
+
+          <!-- BANNER DEL PACIENTE ACTUALMENTE VISTO EN EL CHAT -->
+          <div class="bg-slate-100 border-b border-slate-200 px-3 py-1.5 flex items-center justify-between text-xs">
+            <div class="truncate mr-2">
+              <span class="text-slate-500 text-[11px]">Paciente:</span>
+              <strong id="active-patient-name" class="text-slate-900 font-semibold ml-1">Elena Navarro</strong>
+            </div>
+            <span id="active-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-100 text-amber-800">PENDING</span>
+          </div>
+
+          <!-- BARRA DE CUENTA REGRESIVA DEL MODO PRUEBA (1 MINUTO) -->
+          <div id="test-timer-banner" class="bg-amber-50 border-b border-amber-200 px-3 py-1.5 flex items-center justify-between text-[11px] text-amber-900">
+            <div class="flex items-center space-x-1.5">
+              <i class="fa-solid fa-stopwatch text-amber-600 animate-spin" style="animation-duration: 3s;"></i>
+              <span>Recordatorio en: <strong id="timer-countdown" class="font-mono text-amber-800 font-bold">--s</strong></span>
+            </div>
+            <button onclick="fireReminderNow()" class="px-2 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-[10px] font-semibold transition">
+              Disparar ya
+            </button>
+          </div>
+
+          <!-- CHAT MESSAGES CONTAINER -->
+          <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3 chat-bg flex flex-col text-xs">
+            <!-- Mensajes de WhatsApp -->
+          </div>
+
+          <!-- QUICK RESPONSE BUTTONS -->
+          <div class="bg-slate-50 border-t border-slate-200 p-2 overflow-x-auto flex space-x-1.5 whitespace-nowrap text-[11px]">
+            <button onclick="sendQuickReply('1')" class="px-2.5 py-1 bg-white border border-teal-300 hover:bg-teal-50 text-[#005073] rounded-full font-semibold transition shadow-xs">
+              1️⃣ Confirmar
+            </button>
+            <button onclick="sendQuickReply('Sí, confirmo')" class="px-2.5 py-1 bg-white border border-teal-300 hover:bg-teal-50 text-[#005073] rounded-full font-medium transition shadow-xs">
+              "Sí, confirmo"
+            </button>
+            <button onclick="sendQuickReply('2')" class="px-2.5 py-1 bg-white border border-red-300 hover:bg-red-50 text-red-700 rounded-full font-semibold transition shadow-xs">
+              2️⃣ Cancelar
+            </button>
+            <button onclick="sendQuickReply('No podré ir')" class="px-2.5 py-1 bg-white border border-red-300 hover:bg-red-50 text-red-700 rounded-full font-medium transition shadow-xs">
+              "No podré ir"
+            </button>
+            <button onclick="sendQuickReply('¿Cuánto cuesta la limpieza?')" class="px-2.5 py-1 bg-white border border-amber-300 hover:bg-amber-50 text-amber-800 rounded-full font-medium transition shadow-xs">
+              "¿Cuánto cuesta?" (Fallback)
+            </button>
+          </div>
+
+          <!-- INPUT FORM -->
+          <form onsubmit="handleSendMessage(event)" class="bg-white p-2 border-t border-slate-200 flex items-center space-x-2">
+            <input 
+              type="text" 
+              id="chat-input"
+              placeholder="Escribe como paciente..." 
+              class="flex-1 bg-slate-100 border border-slate-300 rounded-full px-3 py-1.5 text-xs focus:outline-none focus:border-[#005073]"
+            />
+            <button type="submit" class="w-8 h-8 rounded-full bg-[#005073] hover:bg-[#0d3b66] text-white flex items-center justify-center transition shadow-sm">
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: CREAR CITA MANUAL -->
+  <div id="modal-create" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-sky-100 text-[#005073] flex items-center justify-center font-bold">
+            🦷
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-base">Agendar Cita Manual</h3>
+            <p class="text-[11px] text-slate-500">Dispara WhatsApp inmediato de cortesía</p>
+          </div>
+        </div>
+        <button onclick="closeCreateModal()" class="text-slate-400 hover:text-slate-600 text-sm">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleCreateAppointment(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Nombre del Paciente *</label>
+          <input type="text" id="form-patient-name" required placeholder="Ej: Juan Pérez" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-[#005073] focus:bg-white" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Teléfono WhatsApp (Formato E.164) *</label>
+          <input type="text" id="form-patient-phone" required placeholder="+34612345678" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-[#005073] focus:bg-white" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Especialista</label>
+            <select id="form-specialist" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-[#005073] focus:bg-white">
+              <option value="Dr. Zaragozá (Implantología)">Dr. Zaragozá (Implantología)</option>
+              <option value="Dra. Martínez (Ortodoncia)">Dra. Martínez (Ortodoncia)</option>
+              <option value="Dra. Vicente (Higiene Dental)">Dra. Vicente (Higiene Dental)</option>
+              <option value="Equipo Dr. Zaragozá">Equipo Dr. Zaragozá</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tratamiento</label>
+            <select id="form-treatment" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-[#005073] focus:bg-white">
+              <option value="Revisión General">Revisión General</option>
+              <option value="Limpieza Dental">Limpieza Dental</option>
+              <option value="Implante Dental">Implante Dental</option>
+              <option value="Ortodoncia Invisible">Ortodoncia Invisible</option>
+              <option value="Extracción / Muela">Extracción / Muela</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="font-semibold text-slate-700">Fecha y Hora de la Cita *</label>
+            <button type="button" onclick="fillQuick2MinTest()" class="text-[11px] text-[#005073] hover:underline font-semibold flex items-center">
+              <i class="fa-solid fa-bolt mr-1 text-amber-500"></i> Probar en 2 minutos
+            </button>
+          </div>
+          <input type="datetime-local" id="form-datetime" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-[#005073] focus:bg-white" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Notas / Motivo de consulta</label>
+          <textarea id="form-notes" rows="2" placeholder="Observaciones de recepción..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-[#005073] focus:bg-white"></textarea>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-[11px] text-amber-950 flex items-start space-x-2.5">
+          <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 text-sm"></i>
+          <div class="space-y-1">
+            <p class="font-bold text-amber-900">Reglas de Envío de WhatsApp:</p>
+            <p><strong>• Mensaje 1 (Inmediato):</strong> "Hola {{nombre}}, tu cita en la Clínica Dental Dr. Zaragozá ha sido agendada correctamente para el {{fecha}} a las {{hora}}..."</p>
+            <p id="modal-test-mode-notice"><strong>• Mensaje 2 (Recordatorio):</strong> Programado para <strong>1 MINUTO después</strong> (Modo Pruebas / Cita a 2 min).</p>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeCreateModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium transition">
+            Cancelar
+          </button>
+          <button type="submit" id="btn-save-appt" class="px-5 py-2 bg-[#005073] hover:bg-[#0d3b66] text-white rounded-xl font-bold shadow-md transition">
+            Guardar & Agendar Cita
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE DE CITA EXISTENTE -->
+  <div id="modal-detail" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-100">
+      <div class="flex justify-between items-start pb-3 border-b border-slate-100 mb-3">
+        <div>
+          <span id="detail-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-100 text-amber-800">PENDING</span>
+          <h3 id="detail-patient-name" class="font-bold text-slate-900 text-base mt-1">Nombre Paciente</h3>
+        </div>
+        <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs text-slate-600 mb-4">
+        <p><i class="fa-solid fa-phone text-[#005073] mr-2 w-4"></i> <span id="detail-phone" class="font-mono font-medium text-slate-800"></span></p>
+        <p><i class="fa-regular fa-clock text-[#005073] mr-2 w-4"></i> <span id="detail-datetime" class="font-medium text-slate-800"></span></p>
+        <p><i class="fa-solid fa-user-doctor text-[#005073] mr-2 w-4"></i> <span id="detail-specialist"></span></p>
+        <p><i class="fa-solid fa-tooth text-[#005073] mr-2 w-4"></i> <span id="detail-treatment"></span></p>
+        <p class="pt-1 border-t border-slate-100 text-[11px] text-slate-500" id="detail-notes"></p>
+      </div>
+
+      <div class="flex flex-col space-y-2">
+        <button onclick="openChatForCurrentDetail()" class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center">
+          <i class="fa-brands fa-whatsapp mr-1.5 text-sm"></i> Abrir en Simulador WhatsApp
+        </button>
+        <button onclick="fireReminderForCurrentDetail()" id="btn-fire-detail" class="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center">
+          <i class="fa-solid fa-bolt mr-1.5 text-xs"></i> Disparar Recordatorio Ahora
+        </button>
+        <button onclick="deleteCurrentDetailAppointment()" class="w-full py-1.5 text-red-600 hover:bg-red-50 rounded-xl text-xs font-medium transition">
+          Eliminar Cita de la Agenda
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT & FULLCALENDAR ENGINE -->
+  <script>
+    let calendar;
+    let selectedPhone = "+34611223344";
+    let selectedPatient = "Elena Navarro";
+    let selectedAppointmentId = "appt-zaragoza-001";
+    let isTestMode = true;
+    let currentDetailEvent = null;
+
+    // Reloj en vivo de Europe/Madrid
+    function updateClock() {
+      const options = { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      document.getElementById('live-clock').innerText = new Intl.DateTimeFormat([], options).format(new Date());
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Inicializar FullCalendar
+    document.addEventListener('DOMContentLoaded', function() {
+      const calendarEl = document.getElementById('calendar');
+      
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        locale: 'es',
+        firstDay: 1, // Lunes
+        slotMinTime: '08:00:00',
+        slotMaxTime: '21:00:00',
+        slotDuration: '00:30:00',
+        allDaySlot: false,
+        nowIndicator: true,
+        editable: true,
+        selectable: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'timeGridWeek,timeGridDay,dayGridMonth'
+        },
+        buttonText: {
+          today: 'Hoy',
+          month: 'Mes',
+          week: 'Semana',
+          day: 'Día'
+        },
+        events: '/api/appointments/calendar',
+
+        // 1. Clic en espacio vacío para crear cita
+        select: function(info) {
+          openCreateModal(info.startStr);
+        },
+
+        // 2. Clic en cita existente para ver detalle y abrir chat
+        eventClick: function(info) {
+          showEventDetail(info.event);
+        },
+
+        // 3. Arrastrar y soltar (Drag & Drop) para modificar hora
+        eventDrop: async function(info) {
+          const newStart = info.event.start.toISOString();
+          try {
+            const res = await fetch(`/api/appointments/${info.event.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ appointment_datetime: newStart })
+            });
+            if (!res.ok) {
+              info.revert();
+              alert("Error al reprogramar cita.");
+            } else {
+              loadAppointmentsData();
+              loadChatMessages();
+            }
+          } catch (err) {
+            info.revert();
+          }
+        }
+      });
+
+      calendar.render();
+      loadSettings();
+      loadAppointmentsData();
+      setInterval(syncTimerCountdown, 1000);
+      setInterval(loadAppointmentsData, 4000); // Refresco periódico
+    });
+
+    // Cargar Settings iniciales
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        isTestMode = data.test_mode;
+        document.getElementById('toggle-test-mode').checked = isTestMode;
+        updateTestModeUI();
+      } catch (e) {}
+    }
+
+    async function toggleTestMode(checked) {
+      try {
+        const res = await fetch('/api/settings/test-mode', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ test_mode: checked })
+        });
+        const data = await res.json();
+        isTestMode = data.test_mode;
+        updateTestModeUI();
+      } catch (e) {}
+    }
+
+    function updateTestModeUI() {
+      const notice = document.getElementById('modal-test-mode-notice');
+      const banner = document.getElementById('test-timer-banner');
+      if (isTestMode) {
+        notice.innerHTML = '2. Se programa el recordatorio para <strong>1 MINUTO después</strong> (Modo Pruebas).';
+        banner.style.display = 'flex';
+      } else {
+        notice.innerHTML = '2. Se programará para <strong>24 horas antes</strong> de la fecha de la cita (Modo Producción).';
+        banner.style.display = 'none';
+      }
+    }
+
+    // Cargar Citas y sincronizar
+    async function loadAppointmentsData() {
+      try {
+        const [apptsRes, alertsRes] = await Promise.all([
+          fetch('/api/appointments'),
+          fetch('/api/alerts')
+        ]);
+        const appointments = await apptsRes.json();
+        const alerts = await alertsRes.json();
+
+        renderAlerts(alerts);
+        
+        // Actualizar datos del paciente activo
+        const current = appointments.find(a => a.id === selectedAppointmentId || a.patient_phone === selectedPhone);
+        if (current) {
+          selectedPhone = current.patient_phone;
+          selectedPatient = current.patient_name;
+          selectedAppointmentId = current.id;
+          document.getElementById('active-patient-name').innerText = current.patient_name;
+          document.getElementById('active-phone-label').innerText = current.patient_phone;
+          const badge = document.getElementById('active-status-badge');
+          badge.innerText = current.status;
+          badge.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase ${getBadgeClass(current.status)}`;
+
+          // Countdown
+          const countdownEl = document.getElementById('timer-countdown');
+          if (current.remaining_seconds && current.remaining_seconds > 0) {
+            countdownEl.innerText = `${current.remaining_seconds}s`;
+          } else if (current.status === 'REMINDER_SENT') {
+            countdownEl.innerText = '¡Enviado!';
+          } else {
+            countdownEl.innerText = '--';
+          }
+        }
+
+        loadChatMessages();
+      } catch (err) {
+        console.error("Error al sincronizar citas:", err);
+      }
+    }
+
+    function syncTimerCountdown() {
+      const countdownEl = document.getElementById('timer-countdown');
+      const txt = countdownEl.innerText;
+      if (txt.endsWith('s')) {
+        let sec = parseInt(txt);
+        if (sec > 0) {
+          sec--;
+          countdownEl.innerText = `${sec}s`;
+          if (sec === 0) {
+            setTimeout(() => {
+              calendar.refetchEvents();
+              loadAppointmentsData();
+            }, 1200);
+          }
+        }
+      }
+    }
+
+    function getBadgeClass(status) {
+      switch (status) {
+        case 'CONFIRMED': return 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+        case 'CANCELLED': return 'bg-rose-100 text-rose-800 border border-rose-300';
+        case 'REMINDER_SENT': return 'bg-sky-100 text-sky-800 border border-sky-300';
+        case 'MANUAL_REVIEW': return 'bg-amber-100 text-amber-800 border border-amber-300';
+        default: return 'bg-amber-100 text-amber-800 border border-amber-300';
+      }
+    }
+
+    function fillQuick2MinTest() {
+      const now = new Date();
+      // Programar para dentro de 2 minutos
+      const in2min = new Date(now.getTime() + 2 * 60 * 1000);
+      const isoLocal = new Date(in2min.getTime() - in2min.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      document.getElementById('form-datetime').value = isoLocal;
+      if (!document.getElementById('form-patient-name').value) {
+        document.getElementById('form-patient-name').value = 'Paciente Prueba 2 Min';
+      }
+      if (document.getElementById('form-patient-phone').value === '+346' || !document.getElementById('form-patient-phone').value) {
+        document.getElementById('form-patient-phone').value = '+34699112233';
+      }
+      document.getElementById('form-treatment').value = 'Revisión General';
+      document.getElementById('form-notes').value = 'Cita de prueba rápida (dispara recordatorio 1 min después de agendar).';
+    }
+
+    // Modal Crear Cita
+    function openCreateModal(defaultDateStr) {
+      const dateInput = document.getElementById('form-datetime');
+      if (defaultDateStr) {
+        // Formato para input datetime-local: YYYY-MM-DDTHH:mm
+        const dateObj = new Date(defaultDateStr);
+        const isoLocal = new Date(dateObj.getTime() - dateObj.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        dateInput.value = isoLocal;
+      } else {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(10, 0, 0, 0);
+        dateInput.value = tomorrow.toISOString().slice(0, 16);
+      }
+
+      document.getElementById('form-patient-name').value = '';
+      document.getElementById('form-patient-phone').value = '+346';
+      document.getElementById('form-notes').value = '';
+      document.getElementById('modal-create').classList.remove('hidden');
+    }
+
+    function closeCreateModal() {
+      document.getElementById('modal-create').classList.add('hidden');
+    }
+
+    async function handleCreateAppointment(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-appt');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Guardando...';
+
+      const payload = {
+        patient_name: document.getElementById('form-patient-name').value.trim(),
+        patient_phone: document.getElementById('form-patient-phone').value.trim(),
+        specialist: document.getElementById('form-specialist').value,
+        treatment: document.getElementById('form-treatment').value,
+        appointment_datetime: document.getElementById('form-datetime').value,
+        notes: document.getElementById('form-notes').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          closeCreateModal();
+          selectedPhone = payload.patient_phone;
+          selectedPatient = payload.patient_name;
+          selectedAppointmentId = data.appointment.id;
+          calendar.refetchEvents();
+          await loadAppointmentsData();
+        } else {
+          alert("Error: " + (data.error || "No se pudo crear la cita"));
+        }
+      } catch (err) {
+        alert("Error de conexión al guardar cita");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Guardar & Agendar Cita';
+      }
+    }
+
+    // Modal Detalle de Cita
+    function showEventDetail(event) {
+      currentDetailEvent = event;
+      const props = event.extendedProps;
+      document.getElementById('detail-patient-name').innerText = props.patient_name;
+      document.getElementById('detail-phone').innerText = props.patient_phone;
+      document.getElementById('detail-specialist').innerText = props.specialist;
+      document.getElementById('detail-treatment').innerText = props.treatment;
+      document.getElementById('detail-notes').innerText = props.notes || 'Sin observaciones previas.';
+
+      const dt = new Date(event.start);
+      document.getElementById('detail-datetime').innerText = dt.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+      const badge = document.getElementById('detail-status-badge');
+      badge.innerText = props.status;
+      badge.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase ${getBadgeClass(props.status)}`;
+
+      document.getElementById('modal-detail').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('modal-detail').classList.add('hidden');
+      currentDetailEvent = null;
+    }
+
+    function openChatForCurrentDetail() {
+      if (!currentDetailEvent) return;
+      selectedPhone = currentDetailEvent.extendedProps.patient_phone;
+      selectedPatient = currentDetailEvent.extendedProps.patient_name;
+      selectedAppointmentId = currentDetailEvent.id;
+      loadAppointmentsData();
+      closeDetailModal();
+    }
+
+    async function fireReminderForCurrentDetail() {
+      if (!currentDetailEvent) return;
+      await fireReminderNow(currentDetailEvent.id);
+      closeDetailModal();
+    }
+
+    async function deleteCurrentDetailAppointment() {
+      if (!currentDetailEvent) return;
+      if (!confirm(`¿Seguro que deseas eliminar la cita de ${currentDetailEvent.extendedProps.patient_name}?`)) return;
+
+      try {
+        await fetch(`/api/appointments/${currentDetailEvent.id}`, { method: 'DELETE' });
+        calendar.refetchEvents();
+        closeDetailModal();
+        loadAppointmentsData();
+      } catch (e) {
+        alert("Error al eliminar cita");
+      }
+    }
+
+    // Disparar Recordatorio Inmediato (Acelerar 1 min)
+    async function fireReminderNow(apptId) {
+      const id = apptId || selectedAppointmentId;
+      try {
+        const res = await fetch(`/api/test/fire-reminder/${id}`, { method: 'POST' });
+        if (res.ok) {
+          calendar.refetchEvents();
+          await loadAppointmentsData();
+        }
+      } catch (err) {
+        console.error("Error al disparar recordatorio:", err);
+      }
+    }
+
+    // Cargar Historial de Mensajes de WhatsApp
+    async function loadChatMessages() {
+      const container = document.getElementById('chat-messages');
+      try {
+        const res = await fetch(`/api/chat?phone=${encodeURIComponent(selectedPhone)}`);
+        const history = await res.json();
+
+        if (history.length === 0) {
+          container.innerHTML = `
+            <div class="m-auto text-center p-4 text-slate-400 text-xs">
+              <i class="fa-regular fa-comments text-2xl mb-1 text-slate-300"></i>
+              <p>No hay mensajes con este paciente aún.</p>
+              <p class="text-[10px] mt-1 text-[#005073]">Agendarás una cita para recibir el mensaje de cortesía.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = '';
+        history.forEach(m => {
+          const isBot = m.sender === 'bot';
+          const msgDiv = document.createElement('div');
+          msgDiv.className = `flex flex-col max-w-[85%] ${isBot ? 'self-start items-start' : 'self-end items-end'}`;
+
+          const bubble = document.createElement('div');
+          bubble.className = `p-2.5 rounded-2xl shadow-2xs text-xs whitespace-pre-line leading-relaxed ${
+            isBot 
+              ? 'bg-white text-slate-800 rounded-tl-xs border border-slate-200' 
+              : 'bg-emerald-600 text-white rounded-tr-xs'
+          }`;
+          bubble.innerHTML = m.text.replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+
+          const timeSpan = document.createElement('span');
+          timeSpan.className = 'text-[9px] text-slate-400 mt-0.5 px-1';
+          timeSpan.innerText = m.time || '';
+
+          msgDiv.appendChild(bubble);
+          msgDiv.appendChild(timeSpan);
+          container.appendChild(msgDiv);
+        });
+
+        container.scrollTop = container.scrollHeight;
+      } catch (err) {
+        console.error("Error al cargar chat:", err);
+      }
+    }
+
+    // Enviar mensaje como paciente (Webhook Inbound)
+    async function handleSendMessage(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      await sendToWebhook(text);
+    }
+
+    function sendQuickReply(text) {
+      sendToWebhook(text);
+    }
+
+    async function sendToWebhook(text) {
+      try {
+        await fetch('/webhook/whatsapp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: selectedPhone,
+            message: text,
+            messageId: 'sim_' + Date.now()
+          })
+        });
+
+        calendar.refetchEvents();
+        await loadAppointmentsData();
+      } catch (err) {
+        console.error("Error enviando webhook:", err);
+      }
+    }
+
+    // Renderizar Alertas
+    function renderAlerts(alerts) {
+      const container = document.getElementById('alerts-container');
+      const counter = document.getElementById('alert-counter');
+      counter.innerText = `${alerts.length} alertas`;
+
+      if (!alerts || alerts.length === 0) {
+        container.innerHTML = '<p class="text-slate-400 italic py-2 text-center">No hay alertas recientes en recepción.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      alerts.forEach(al => {
+        const isCancel = al.type === 'CANCELACION_CITA';
+        const card = document.createElement('div');
+        card.className = `p-2.5 rounded-xl border text-xs flex items-start space-x-2.5 ${
+          isCancel ? 'bg-red-50/80 border-red-200 text-red-950' : 'bg-amber-50/80 border-amber-200 text-amber-950'
+        }`;
+        card.innerHTML = `
+          <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+            isCancel ? 'bg-red-200 text-red-700' : 'bg-amber-200 text-amber-800'
+          }">
+            <i class="fa-solid ${isCancel ? 'fa-calendar-xmark' : 'fa-triangle-exclamation'} text-[10px]"></i>
+          </div>
+          <div class="flex-1 leading-snug">
+            <div class="flex justify-between items-center mb-0.5">
+              <strong class="font-semibold">${al.type}</strong>
+              <span class="text-[10px] opacity-70">${al.timestamp}</span>
+            </div>
+            <p class="text-slate-700"><strong>${al.patient_name}</strong>: "${al.patient_message}"</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>

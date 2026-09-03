@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: citas-drzaragoza
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TZ
+        value: Europe/Madrid
+      - key: OFFICIAL_PHONE
+        value: "34610812835"
+      - key: DATABASE_URL
+        sync: false
