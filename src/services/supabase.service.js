@@ -100,16 +100,19 @@ class SupabaseService {
 
       const files = fs.readdirSync(authDir);
       for (const file of files) {
-        const filePath = path.join(authDir, file);
-        const stat = fs.statSync(filePath);
-        if (stat.isFile()) {
-          const content = fs.readFileSync(filePath, 'utf-8');
-          await this.pool.query(
-            `INSERT INTO whatsapp_auth_sessions (id, data, updated_at) 
-             VALUES ($1, $2, NOW()) 
-             ON CONFLICT (id) DO UPDATE SET data = $2, updated_at = NOW()`,
-            [file, content]
-          );
+        try {
+          const filePath = path.join(authDir, file);
+          if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            const content = fs.readFileSync(filePath, 'utf-8');
+            await this.pool.query(
+              `INSERT INTO whatsapp_auth_sessions (id, data, updated_at) 
+               VALUES ($1, $2, NOW()) 
+               ON CONFLICT (id) DO UPDATE SET data = $2, updated_at = NOW()`,
+              [file, content]
+            );
+          }
+        } catch (fileErr) {
+          // Archivo efímero de Baileys ya purgado por el socket, ignorar de forma segura
         }
       }
       console.log(`💾 [SUPABASE AUTH BACKUP] Sesión de WhatsApp sincronizada en Supabase (${files.length} archivos).`);
