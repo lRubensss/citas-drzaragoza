@@ -132,14 +132,11 @@ app.get('/api/appointments/calendar', checkLicense, (req, res) => {
 // Crear nueva cita manual
 app.post('/api/appointments', checkLicense, (req, res) => {
   try {
-    const { patient_name, patient_phone, appointment_datetime, specialist, treatment, notes, test_mode } = req.body;
+    const { patient_name, patient_phone, appointment_datetime, specialist, treatment, notes } = req.body;
 
     if (!patient_name || !patient_phone || !appointment_datetime) {
       return res.status(400).json({ error: 'Faltan campos obligatorios (nombre, teléfono, fecha y hora)' });
     }
-
-    const settings = db.getSettings();
-    const isTest = test_mode !== undefined ? Boolean(test_mode) : settings.test_mode;
 
     const id = `appt_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 6)}`;
     const newAppt = {
@@ -175,9 +172,9 @@ app.post('/api/appointments', checkLicense, (req, res) => {
       console.error('Advertencia controlada al encolar mensaje 1:', msgErr);
     }
 
-    // 3. PROGRAMACIÓN DE MENSAJE 2 (Recordatorio a 60s en test o 24h antes en prod)
+    // 3. PROGRAMACIÓN DE MENSAJE 2 (Recordatorio Informativo 24h antes de la cita)
     try {
-      schedulerService.scheduleReminder(newAppt, isTest);
+      schedulerService.scheduleReminder(newAppt);
     } catch (schedErr) {
       console.error('Advertencia controlada al programar recordatorio:', schedErr);
     }
@@ -186,7 +183,6 @@ app.post('/api/appointments', checkLicense, (req, res) => {
       status: 'created',
       message: 'Cita guardada en el calendario exitosamente',
       appointment: newAppt,
-      test_mode: isTest,
       courtesy_enqueued: true,
     });
   } catch (err) {
@@ -210,9 +206,8 @@ app.put('/api/appointments/:id', checkLicense, (req, res) => {
       return res.status(404).json({ error: 'Cita no encontrada' });
     }
 
-    // Re-programar recordatorio
-    const settings = db.getSettings();
-    schedulerService.scheduleReminder(updated, settings.test_mode);
+    // Re-programar recordatorio (24h antes)
+    schedulerService.scheduleReminder(updated);
 
     // Notificar reprogramación por WhatsApp
     let dt = DateTime.fromISO(updated.appointment_datetime, { zone: config.TIMEZONE });
@@ -247,19 +242,6 @@ app.delete('/api/appointments/:id', checkLicense, (req, res) => {
 });
 
 // Disparar recordatorio inmediatamente
-app.post('/api/test/fire-reminder/:id', checkLicense, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const success = await schedulerService.fireImmediately(id);
-    if (success) {
-      return res.json({ status: 'fired', id, message: 'Recordatorio enviado inmediatamente' });
-    }
-    return res.status(400).json({ error: 'No se pudo disparar el recordatorio (cita no pendiente o inexistente)' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // ==========================================
 // 4. CHAT Y ALERTAS A RECEPCIÓN
 // ==========================================
@@ -313,13 +295,6 @@ app.get('/api/settings', (req, res) => {
     timezone: config.TIMEZONE,
     active_timers: schedulerService.getActiveTimers(),
   });
-});
-
-app.post('/api/settings/toggle-test', (req, res) => {
-  const settings = db.getSettings();
-  const newMode = !settings.test_mode;
-  db.updateSettings({ test_mode: newMode });
-  res.json({ test_mode: newMode, message: `Modo de pruebas ${newMode ? 'activado' : 'desactivado'}` });
 });
 
 app.post('/api/settings/toggle-license', (req, res) => {

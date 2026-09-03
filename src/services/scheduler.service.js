@@ -13,11 +13,10 @@ class SchedulerService {
   }
 
   /**
-   * Programa el recordatorio inteligente:
-   * - En Modo Pruebas (o cita a <= 3 min) -> Se dispara a los 60 SEGUNDOS exactos.
-   * - En Producción -> Se programa para 24 horas antes del inicio de la consulta.
+   * Programa el recordatorio informativo oficial:
+   * Se programa para enviarse automáticamente 24 horas antes del inicio de la cita.
    */
-  scheduleReminder(appointment, isTestMode = true) {
+  scheduleReminder(appointment) {
     this.cancelTimer(appointment.id);
 
     const nowMadrid = DateTime.now().setZone(config.TIMEZONE);
@@ -28,35 +27,27 @@ class SchedulerService {
       });
     }
 
+    if (!apptDateTime.isValid) {
+      console.warn(`[SCHEDULER] Fecha de cita no válida: ${appointment.appointment_datetime}`);
+      return;
+    }
+
     const diffSeconds = apptDateTime.diff(nowMadrid, 'seconds').seconds;
+    const secondsUntil24h = diffSeconds - 24 * 3600;
 
-    // Si es Modo Pruebas o la cita está programada para dentro de <= 3 minutos
-    if (isTestMode || (diffSeconds > 0 && diffSeconds <= 180)) {
-      const delayMs = 60 * 1000; // 60 segundos exactos
-      const fireTimestamp = Date.now() + delayMs;
-
-      console.log(`⏱️ [MODO PRUEBAS] Programando recordatorio para ${appointment.patient_name} en 60 segundos.`);
-
+    if (secondsUntil24h > 0) {
+      console.log(`📅 [RECORDATORIO OFICIAL] Programado para ${appointment.patient_name} en ${Math.round(secondsUntil24h / 3600)}h (24h antes de la consulta).`);
       const timer = setTimeout(async () => {
         await this.fireReminder(appointment.id);
-      }, delayMs);
+      }, secondsUntil24h * 1000);
 
-      this.activeTimers.set(appointment.id, { timer, fireTimestamp, appointmentId: appointment.id });
+      this.activeTimers.set(appointment.id, {
+        timer,
+        fireTimestamp: Date.now() + secondsUntil24h * 1000,
+        appointmentId: appointment.id,
+      });
     } else {
-      // Producción: 24 horas antes
-      const secondsUntil24h = diffSeconds - 24 * 3600;
-      if (secondsUntil24h > 0 && secondsUntil24h <= 7 * 86400) {
-        console.log(`📅 [PRODUCCIÓN] Recordatorio para ${appointment.patient_name} programado en ${Math.round(secondsUntil24h)}s (24h antes).`);
-        const timer = setTimeout(async () => {
-          await this.fireReminder(appointment.id);
-        }, secondsUntil24h * 1000);
-
-        this.activeTimers.set(appointment.id, {
-          timer,
-          fireTimestamp: Date.now() + secondsUntil24h * 1000,
-          appointmentId: appointment.id,
-        });
-      }
+      console.log(`ℹ️ [SCHEDULER] La cita de ${appointment.patient_name} es en menos de 24h. Confirmada informativamente al crear.`);
     }
   }
 

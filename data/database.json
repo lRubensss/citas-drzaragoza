@@ -264,7 +264,6 @@
     ]
   },
   "settings": {
-    "subscription_active": true,
-    "test_mode": true
+    "subscription_active": true
   }
 }

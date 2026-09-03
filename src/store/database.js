@@ -14,7 +14,6 @@ class DatabaseStore {
       chats: {},
       settings: {
         subscription_active: config.SUBSCRIPTION_ACTIVE,
-        test_mode: true,
       },
     };
     this.init();

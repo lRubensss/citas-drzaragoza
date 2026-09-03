@@ -276,21 +276,6 @@
           <span id="whatsapp-status-text">Conectando...</span>
         </button>
 
-        <!-- SWITCH MODO PRUEBAS (1 MINUTO) -->
-        <div class="flex items-center space-x-2 bg-[#FAFAFB] px-3.5 py-1.5 rounded-full border border-[#E2E8F0]">
-          <span class="text-xs font-medium text-[#4A5568] flex items-center gap-1.5">
-            <i class="fa-solid fa-stopwatch text-[#F36279]"></i> Modo Test (1 min)
-          </span>
-          <button 
-            id="test-mode-toggle"
-            onclick="toggleTestMode()"
-            title="Alternar modo de pruebas rápidas (recordatorio a los 60s)"
-            class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-[#F36279]"
-          >
-            <span id="test-mode-indicator" class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-4"></span>
-          </button>
-        </div>
-
         <!-- BOTÓN PRINCIPAL: NUEVA CITA -->
         <button 
           onclick="openCreateModal()" 
@@ -431,18 +416,9 @@
 
           <!-- FECHA Y HORA -->
           <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="font-semibold text-[#2D3748]">
-                Fecha y Hora de la Cita <span class="text-[#F36279]">*</span>
-              </label>
-              <button 
-                type="button" 
-                onclick="fillQuick2MinTest()" 
-                class="text-[11px] text-[#F36279] hover:underline font-semibold flex items-center cursor-pointer"
-              >
-                <i class="fa-solid fa-bolt mr-1 text-amber-500"></i> Probar en 2 minutos
-              </button>
-            </div>
+            <label class="block font-semibold text-[#2D3748] mb-1.5">
+              Fecha y Hora de la Cita <span class="text-[#F36279]">*</span>
+            </label>
             <input 
               type="text" 
               id="form-datetime" 
@@ -464,26 +440,12 @@
             ></textarea>
           </div>
 
-          <!-- MODO PRUEBAS CHECKBOX -->
-          <div class="p-3 rounded-xl bg-[#FAFAFB] border border-[#E2E8F0] flex items-center justify-between">
-            <label class="flex items-center space-x-2.5 cursor-pointer select-none">
-              <input 
-                type="checkbox" 
-                id="form-test-mode-check" 
-                checked 
-                class="w-4 h-4 text-[#F36279] rounded border-slate-300 focus:ring-[#F36279] accent-[#F36279] cursor-pointer" 
-              />
-              <span class="font-semibold text-[#2D3748] text-xs">Modo Pruebas (Recordatorio en 1 min)</span>
-            </label>
-            <span class="text-[10px] text-[#F36279] bg-[#FDE8EC] px-2 py-0.5 rounded font-mono font-bold">60 seg</span>
-          </div>
-
           <!-- CUADRO INFORMATIVO DE MENSAJES -->
           <div class="bg-[#FDE8EC]/60 border border-[#F36279]/30 p-3 rounded-xl text-[11px] text-[#2D3748] flex items-start space-x-2.5">
             <i class="fa-solid fa-circle-info text-[#F36279] mt-0.5 text-sm"></i>
             <div class="space-y-1">
-              <p><strong>• Mensaje 1 (Inmediato):</strong> Confirmación informativa al agendar desde +34 610 81 28 35.</p>
-              <p><strong>• Mensaje 2 (Recordatorio):</strong> 24h antes (o 60s en test) recordando consulta de forma 100% informativa.</p>
+              <p><strong>• Mensaje 1 (Confirmación Inmediata):</strong> Notificación informativa enviada al instante tras agendar desde el número oficial +34 610 81 28 35.</p>
+              <p><strong>• Mensaje 2 (Recordatorio Informativo):</strong> Se enviará automáticamente 24 horas antes de la consulta recordando fecha, hora y doctor.</p>
             </div>
           </div>
 
@@ -541,23 +503,14 @@
         <p><strong class="text-[#2D3748]">Notas:</strong> <span id="detail-notes" class="italic text-[#718096]">Sin observaciones</span></p>
       </div>
 
-      <div class="flex flex-col space-y-2 pt-3 border-t border-[#E2E8F0]">
-        <div class="flex space-x-2">
-          <button 
-            onclick="fireReminderForCurrentDetail()" 
-            class="flex-1 py-2.5 bg-[#FDE8EC] hover:bg-[#fbd3db] text-[#F36279] font-bold border border-[#F36279]/30 rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <i class="fa-solid fa-bolt text-amber-500"></i> Disparar Recordatorio
-          </button>
-          
-          <button 
-            onclick="deleteCurrentDetail()" 
-            title="Eliminar cita"
-            class="py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <i class="fa-solid fa-trash-can text-rose-500"></i> Eliminar Cita
-          </button>
-        </div>
+      <div class="pt-3 border-t border-[#E2E8F0]">
+        <button 
+          onclick="deleteCurrentDetail()" 
+          title="Eliminar cita"
+          class="w-full py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+        >
+          <i class="fa-solid fa-trash-can text-rose-500"></i> Eliminar Cita
+        </button>
       </div>
     </div>
   </div>
@@ -638,7 +591,6 @@
   <script>
     let calendar;
     let selectedAppointmentId = null;
-    let isTestMode = true;
     let currentDetailAppointment = null;
     let currentDetailId = null;
     let currentWhatsAppConnected = false;
@@ -650,7 +602,6 @@
       initFullCalendar();
       initDateTimePicker();
       await checkWhatsAppStatus();
-      await loadSettings();
       await loadAppointmentsData();
 
       // Validación y auto-formato internacional +34...
@@ -839,45 +790,6 @@
       }
     }
 
-    // Cargar y gestionar ajustes (Modo Pruebas)
-    async function loadSettings() {
-      try {
-        const res = await fetch('/api/settings');
-        const data = await res.json();
-        isTestMode = data.test_mode;
-        updateTestModeUI();
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    function updateTestModeUI() {
-      const toggle = document.getElementById('test-mode-toggle');
-      const indicator = document.getElementById('test-mode-indicator');
-      const formCheck = document.getElementById('form-test-mode-check');
-
-      if (isTestMode) {
-        toggle.className = 'relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-[#F36279]';
-        indicator.className = 'pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-4';
-        if (formCheck) formCheck.checked = true;
-      } else {
-        toggle.className = 'relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-slate-300';
-        indicator.className = 'pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-0';
-        if (formCheck) formCheck.checked = false;
-      }
-    }
-
-    async function toggleTestMode() {
-      isTestMode = !isTestMode;
-      await fetch('/api/settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ test_mode: isTestMode })
-      });
-      updateTestModeUI();
-      showToast(isTestMode ? 'Modo Test activado (recordatorio en 1 min).' : 'Modo Producción activado (recordatorio 24h antes).', 'info');
-    }
-
     // Cargar Citas y Alertas
     async function loadAppointmentsData() {
       try {
@@ -939,20 +851,6 @@
     }
 
     // Modal Crear Cita
-    function fillQuick2MinTest() {
-      const now = new Date();
-      const in2min = new Date(now.getTime() + 2 * 60 * 1000);
-      if (datetimePickerInstance) {
-        datetimePickerInstance.setDate(in2min, true);
-      } else {
-        const isoLocal = new Date(in2min.getTime() - in2min.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-        document.getElementById('form-datetime').value = isoLocal;
-      }
-      if (!document.getElementById('form-patient-name').value) {
-        document.getElementById('form-patient-name').value = 'Paciente Prueba';
-      }
-    }
-
     function openCreateModal(defaultDateStr) {
       document.getElementById('modal-create').classList.remove('hidden');
       
@@ -971,7 +869,6 @@
         document.getElementById('form-datetime').value = isoLocal;
       }
       
-      document.getElementById('form-test-mode-check').checked = isTestMode;
       document.getElementById('form-patient-name').focus();
     }
 
@@ -1021,7 +918,6 @@
         treatment: document.getElementById('form-treatment').value,
         appointment_datetime: dtVal,
         notes: document.getElementById('form-notes').value.trim(),
-        test_mode: document.getElementById('form-test-mode-check').checked,
       };
 
       try {
@@ -1084,27 +980,6 @@
 
     function closeDetailModal() {
       document.getElementById('modal-detail').classList.add('hidden');
-    }
-
-    async function fireReminderForCurrentDetail() {
-      const id = currentDetailId || currentDetailAppointment?.id;
-      if (!id) {
-        alert('Error: No se encontró el identificador de la cita.');
-        return;
-      }
-      try {
-        const res = await fetch(`/api/test/fire-reminder/${encodeURIComponent(id)}`, { method: 'POST' });
-        const data = await res.json();
-        if (res.ok) {
-          showToast(`Recordatorio enviado a ${currentDetailAppointment?.patient_name || 'paciente'}.`, 'success');
-          closeDetailModal();
-        } else {
-          alert(data.error || 'No se pudo enviar el recordatorio.');
-        }
-      } catch (e) {
-        console.error(e);
-        alert('Error de conexión con el servidor.');
-      }
     }
 
     async function deleteCurrentDetail() {
