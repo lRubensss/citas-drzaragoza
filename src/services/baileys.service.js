@@ -1,9 +1,16 @@
-const {
-  default: makeWASocket,
-  DisconnectReason,
-  useMultiFileAuthState,
-  fetchLatestBaileysVersion,
-} = require('@whiskeysockets/baileys');
+let makeWASocket, DisconnectReason, useMultiFileAuthState, fetchLatestBaileysVersion;
+
+async function getBaileys() {
+  if (!makeWASocket) {
+    const baileys = await import('@whiskeysockets/baileys');
+    makeWASocket = baileys.default || baileys.makeWASocket;
+    DisconnectReason = baileys.DisconnectReason;
+    useMultiFileAuthState = baileys.useMultiFileAuthState;
+    fetchLatestBaileysVersion = baileys.fetchLatestBaileysVersion;
+  }
+  return { makeWASocket, DisconnectReason, useMultiFileAuthState, fetchLatestBaileysVersion };
+}
+
 const qrcode = require('qrcode');
 const pino = require('pino');
 const fs = require('fs');
@@ -47,6 +54,7 @@ class BaileysService {
 
   async init() {
     try {
+      await getBaileys();
       const authDir = path.resolve(config.AUTH_DIR);
       if (!fs.existsSync(authDir)) {
         fs.mkdirSync(authDir, { recursive: true });
